@@ -1,7 +1,13 @@
 
-# Cl-Prolog - Common Interface to the ISO prolog implementations from Common Lisp
+# Cl-Prolog - Common Interface to the ISO Prolog implementations from Common Lisp
+
+This library provides a transpiler from S-expression to
+[ISO-standardized](https://www.iso.org/standard/21413.html) Prolog language,
+and the sub-libraries that invoke Stat-of-the-Art Prolog compilers
+such as SWI-prolog, XSB, Yap.
 
 ## Usage
+
 
 
 ## Dependencies
