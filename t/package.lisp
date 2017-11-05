@@ -1,0 +1,26 @@
+#|
+  This file is a part of cl-prolog project.
+  Copyright (c) 2017 Masataro Asai (guicho2.71828@gmail.com)
+|#
+
+(in-package :cl-user)
+(defpackage :cl-prolog.test
+  (:use :cl
+        :cl-prolog
+        :fiveam
+        :trivia :alexandria :iterate))
+(in-package :cl-prolog.test)
+
+
+
+(def-suite :cl-prolog)
+(in-suite :cl-prolog)
+
+;; run test with (run! test-name) 
+
+(test cl-prolog
+
+  )
+
+
+
