@@ -12,6 +12,8 @@ it has more careful considerations regarding which names are accepted by the Pro
 However, I don't do complicated things; if it works it's fine.
 Be just careful which character you use for your symbols.
 
+**EDIT** keithj/cl-prolog seems to have painfully gone through the FFI binding. I definitely won't do the same.
+
 ## API
 
 This library does not provide implementations, but merely the API to those implementations.
