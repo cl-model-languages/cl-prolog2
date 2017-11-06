@@ -14,7 +14,7 @@ Be just careful which character you use for your symbols.
 
 ## API
 
-This library does not provide the implementation, but merely the API to those implementations.
+This library does not provide implementations, but merely the API to those implementations.
 The sub-libraries of cl-prolog should implement the subclass of `prolog-process` and the following generic functions.
 Instantiating a `prolog-process` should launch a corresponding background process.
 
@@ -22,7 +22,14 @@ Instantiating a `prolog-process` should launch a corresponding background proces
     (defgeneric send-rule (process rule callback))
 
 `send-rule` should send a single rule described in an S-exp, and receives the result.
-(WIP: how to obtain the results)
+`callback` should be a function of single argument `stream`, which is connected to the process output.
+This callback is called when the output reached an end-of-file, which happens when the Prolog process returns an answer.
+You can parse the result from the stream. *We don't provide a parser for Prolog output.* (at least at the moment.)
+
+To continue for obtaining more answers, you should return from the fucntion normally.
+When no more answers are necessary, you should perform a local exit by `go`, `return-from` or `throw`.
+Upon the local exit, `unwind-protect` emits a period `.` to the input stream and tells Prolog to stop the query immediately.
+
 
 ## Query format
 
