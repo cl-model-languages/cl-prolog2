@@ -6,6 +6,9 @@ This library provides a transpiler from S-expression to
 and the sub-libraries that invoke Stat-of-the-Art Prolog compilers
 such as SWI-prolog, XSB, Yap.
 
+It looks like https://github.com/keithj/cl-prolog has similar things in mind, and
+it has more careful considerations regarding which names are accepted by the Prolog language spec.
+
 ## Usage
 
 
