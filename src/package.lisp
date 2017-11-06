@@ -9,7 +9,8 @@
   (:export
    #:prolog-process
    #:send-rule
-   #:<--))
+   #:<--
+   #:print-rule))
 (in-package :cl-prolog)
 
 ;; blah blah blah.
