@@ -49,9 +49,18 @@ print_list_([X,Y|Xs]) :-
     format("~a ",X),
     print_list_([Y|Xs]).
 
-program :-
-    conflict(R1,R2,b),
-    color(R1,C,b),
-    print_list([R1,R2,b]),
-    false.
+%% alternative 1
 
+%% program :-
+%%     conflict(R1,R2,b),
+%%     color(R1,C,b),
+%%     print_list([R1,R2,b]),
+%%     false.
+
+%% but this failure-driven approach is "not good" http://www.swi-prolog.org/pldoc/man?section=forall2 ,
+%% since forall/2 makes it explicit that there are rules and side effects.
+
+program :-
+    forall((conflict(R1,R2,b),
+            color(R1,C,b)),
+           print_list([R1,R2,b])).
