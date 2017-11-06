@@ -8,9 +8,8 @@
   (:use :cl :trivia :alexandria :iterate)
   (:export
    #:prolog-process
-   #:launch-process
-   #:send-rules
-   #:send-query))
+   #:send-rule
+   #:<--))
 (in-package :cl-prolog)
 
 ;; blah blah blah.
@@ -56,16 +55,14 @@
     (`(,functor ,@arguments)
       (format stream "~/cl-prolog::print-term/(~/cl-prolog::print-commas/)" functor arguments))))
 
-(defun print-fact (stream list colon at &rest rest)
-  (declare (ignorable colon at rest))
-  (format stream "~/cl-prolog::print-term/.~%" list))
-
-(defun print-clause (stream list colon at &rest rest)
+(defun print-rule (stream list colon at &rest rest)
   (declare (ignorable colon at rest))
   (match list
-    (`(,head ,@rest)
+    (`(<-- ,head ,@rest)
       (format stream "~/cl-prolog::print-term/ :- ~{~/cl-prolog::print-term/~^,~}.~%"
-              head rest))))
+              head rest))
+    (_
+     (format stream "~/cl-prolog::print-term/.~%" list))))
 
   
 ;; > < is ->  + *
@@ -84,8 +81,5 @@
 
 (defclass prolog-process () ())
 
-(defgeneric launch-process (process))
-(defgeneric send-rules (process rules))
-(defgeneric send-query (process query callback))
-
+(defgeneric send-rule (process rule callback))
 

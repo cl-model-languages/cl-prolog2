@@ -12,12 +12,33 @@ it has more careful considerations regarding which names are accepted by the Pro
 However, I don't do complicated things; if it works it's fine.
 Be just careful which character you use for your symbols.
 
-Variables are prefixed by `?`, such as `?X`, following the common conventions in lisp-based Prolog (e.g. On Lisp).
-They are given to the Prolog interpreter as capitalized symbols.
+## API
 
-## Usage
+This library does not provide the implementation, but merely the API to those implementations.
+The sub-libraries of cl-prolog should implement the subclass of `prolog-process` and the following generic functions.
+Instantiating a `prolog-process` should launch a corresponding background process.
 
+    (defclass prolog-process () ())
+    (defgeneric send-rule (process rule callback))
 
+`send-rule` should send a single rule described in an S-exp, and receives the result.
+(WIP: how to obtain the results)
+
+## Query format
+
+Query format mostly follows the Allegro Prolog (which is a fork of PAIP Prolog).
+
+    rule : (<-- top-term top-term*) | top-term
+    
+    top-term : ('not term) | ( atom term* )
+    
+    term : ('list term*) | ('list* term*) | ('not term) | ( atom term* ) | atom | variable | number | string
+    
+    variable : symbols starting with ? or _
+
+    atom : other symbols
+    
+Variables are given to the Prolog interpreter as capitalized symbols.
 
 ## Dependencies
 This library is at least tested on implementation listed below:
