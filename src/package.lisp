@@ -69,10 +69,11 @@
     (`(,functor ,@arguments)
       (format stream "~/cl-prolog::print-term/(~/cl-prolog::print-commas/)" functor arguments))))
 
+
 (defun print-rule (stream list colon at)
   (declare (ignorable colon at))
   (match list
-    (`(<-- ,head ,@rest)
+    (`(,(or :- '<--) ,head ,@rest)
       (format stream "~/cl-prolog::print-term/ :- ~{~/cl-prolog::print-term/~^,~}.~%"
               head rest))
     (_
