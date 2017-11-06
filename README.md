@@ -9,6 +9,12 @@ such as SWI-prolog, XSB, Yap.
 It looks like https://github.com/keithj/cl-prolog has similar things in mind, and
 it has more careful considerations regarding which names are accepted by the Prolog language spec.
 
+However, I don't do complicated things; if it works it's fine.
+Be just careful which character you use for your symbols.
+
+Variables are prefixed by `?`, such as `?X`, following the common conventions in lisp-based Prolog (e.g. On Lisp).
+They are given to the Prolog interpreter as capitalized symbols.
+
 ## Usage
 
 
