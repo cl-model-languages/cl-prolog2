@@ -52,7 +52,7 @@
      )
     ((symbol name)
      (write-string (string-downcase name) stream))
-    ((string)
+    ((string*)
      (format stream "'~a'" term))
     ((number)
      (write term :stream stream))
