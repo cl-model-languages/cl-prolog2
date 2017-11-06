@@ -35,6 +35,10 @@
   (declare (ignorable colon at))
   (format stream "~{~/cl-prolog::print-term/~^,~}" list))
 
+(defun print-semicolons (stream list colon at)
+  (declare (ignorable colon at))
+  (format stream "~{~/cl-prolog::print-term/~^;~}" list))
+
 (setf trivia:*arity-check-by-test-call* nil)
 
 (defun print-term (stream term colon at)
@@ -57,6 +61,10 @@
       (format stream "[~/cl-prolog::print-commas/|~/cl-prolog::print-term/]" (butlast elements) (lastcar elements)))
     (`(not ,term)
       (format stream "\\+ ~/cl-prolog::print-term/" term))
+    (`(and ,@terms)
+      (format stream "(~/cl-prolog::print-commas/)" terms))
+    (`(or ,@terms)
+      (format stream "(~/cl-prolog::print-semicolons/)" terms))
     (`(,functor ,@arguments)
       (format stream "~/cl-prolog::print-term/(~/cl-prolog::print-commas/)" functor arguments))))
 

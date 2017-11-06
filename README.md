@@ -32,11 +32,14 @@ Query format mostly follows the Allegro Prolog (which is a fork of PAIP Prolog).
     
     top-term : ('not term) | ( atom term* )
     
-    term : ('list term*) | ('list* term*) | ('not term) | ( atom term* ) | atom | variable | number | string
+    term : builtins | ( atom term* ) | atom | variable | number | string
     
     variable : symbols starting with ? or _
 
     atom : other symbols
+    
+    builtins : ('list term*) | ('list* term*) | ('not term) | ('or term*) | ('and term*)
+    
     
 Variables are given to the Prolog interpreter as capitalized symbols.
 
