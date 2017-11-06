@@ -20,7 +20,11 @@
 
 (test cl-prolog
 
-  )
+      (print-rule *standard-output* '(<-- (a b c) (a ?b c) (a b c)) nil nil)
+      (print-rule *standard-output* '(<-- (a b c) (a _b c) (a b c)) nil nil)
+      (print-rule *standard-output* '(a b c) nil nil)
+      (print-rule *standard-output* '(member ?x (list* ?x _)) nil nil)
+      (print-rule *standard-output* '(<-- (member ?x (list* _ ?r)) (member ?x ?r)) nil nil))
 
 
 
