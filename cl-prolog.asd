@@ -9,7 +9,7 @@
   :version "0.1"
   :author "Masataro Asai"
   :mailto "guicho2.71828@gmail.com"
-  :license "LLGPL"
+  :license "MIT"
   :depends-on (:trivia :alexandria :iterate :trivia.quasiquote)
   :pathname "src"
   :components ((:file "package"))

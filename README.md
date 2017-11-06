@@ -81,6 +81,6 @@ Copyright (c) 2017 Masataro Asai (guicho2.71828@gmail.com)
 
 # License
 
-Licensed under the LLGPL License.
-
-
+Copyright 2017 Masataro Asai
+Released under the MIT license
+http://opensource.org/licenses/mit-license.php

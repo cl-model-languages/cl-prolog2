@@ -14,7 +14,7 @@
   :author "Masataro Asai"
   :mailto "guicho2.71828@gmail.com"
   :description "Test system of cl-prolog"
-  :license "LLGPL"
+  :license "MIT"
   :depends-on (:cl-prolog
                :fiveam)
   :components ((:module "t"
