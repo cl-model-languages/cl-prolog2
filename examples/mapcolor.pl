@@ -19,10 +19,10 @@ adjacent(3,4).
 adjacent(4,3). 
 adjacent(4,5).
 adjacent(5,4). 
-color(1,red,a).    color(1,red,b). 
-color(2,blue,a).   color(2,blue,b). 
-color(3,green,a).  color(3,green,b). 
-color(4,yellow,a). color(4,blue,b). 
+color(1,red,a).    color(1,red,b).
+color(2,blue,a).   color(2,blue,b).
+color(3,green,a).  color(3,green,b).
+color(4,yellow,a). color(4,blue,b).
 color(5,blue,a).   color(5,green,b).
 
 conflict(Coloring) :- 
@@ -36,6 +36,22 @@ conflict(R1,R2,Coloring) :-
     color(R1,Color,Coloring), 
     color(R2,Color,Coloring).
 
+print_list(List) :-
+    format("("),
+    print_list_(List),
+    format(")").
 
-conflict(R1,R2,b),color(R1,C,b).
-%% findall(Y,descend(martha,X),Z),  length(Z,N).
+    
+print_list_([X|[]]) :-
+    format("~a",X).
+
+print_list_([X,Y|Xs]) :-
+    format("~a ",X),
+    print_list_([Y|Xs]).
+
+program :-
+    conflict(R1,R2,b),
+    color(R1,C,b),
+    print_list([R1,R2,b]),
+    false.
+
