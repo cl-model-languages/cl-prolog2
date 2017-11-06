@@ -66,6 +66,8 @@
       (format stream "(~/cl-prolog::print-commas/)" terms))
     (`(or ,@terms)
       (format stream "(~/cl-prolog::print-semicolons/)" terms))
+    (`(:- ,@arguments)
+      (format stream ":-(~/cl-prolog::print-commas/)" arguments))
     (`(,functor ,@arguments)
       (format stream "~/cl-prolog::print-term/(~/cl-prolog::print-commas/)" functor arguments))))
 
