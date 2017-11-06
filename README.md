@@ -3,7 +3,7 @@
 
 This library provides a transpiler from S-expression to
 [ISO-standardized](https://www.iso.org/standard/21413.html) Prolog language,
-and the sub-libraries that invoke Stat-of-the-Art Prolog compilers
+and the sub-libraries that invoke State-of-the-Art Prolog compilers
 such as SWI-prolog, XSB, Yap.
 
 * https://github.com/guicho271828/cl-prolog.swi
