@@ -26,14 +26,19 @@
 ;; don't try to do things really complicated.
 ;; do not excessively try to support all subset of prolog.
 
-(defun print-commas (stream list colon at &rest rest)
-  (declare (ignorable colon at rest))
+(declaim (ftype (function (stream * boolean boolean))
+                print-commas
+                print-term
+                print-rule))
+
+(defun print-commas (stream list colon at)
+  (declare (ignorable colon at))
   (format stream "~{~/cl-prolog::print-term/~^,~}" list))
 
 (setf trivia:*arity-check-by-test-call* nil)
 
-(defun print-term (stream term colon at &rest rest)
-  (declare (ignorable colon at rest))
+(defun print-term (stream term colon at)
+  (declare (ignorable colon at))
   (ematch term
     ((symbol :name (and name (string* #\?)))
      (write-string (string-capitalize name) stream :start 1)
@@ -55,8 +60,8 @@
     (`(,functor ,@arguments)
       (format stream "~/cl-prolog::print-term/(~/cl-prolog::print-commas/)" functor arguments))))
 
-(defun print-rule (stream list colon at &rest rest)
-  (declare (ignorable colon at rest))
+(defun print-rule (stream list colon at)
+  (declare (ignorable colon at))
   (match list
     (`(<-- ,head ,@rest)
       (format stream "~/cl-prolog::print-term/ :- ~{~/cl-prolog::print-term/~^,~}.~%"
