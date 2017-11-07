@@ -11,7 +11,9 @@
 (defmethod initialize-instance :after ((instance prolog-interpreter) &key args &allow-other-keys)
   (with-slots (process program default-args) instance
     (setf process
-          (external-program:start program (or args default-args) :input :stream :output :stream))
+          (external-program:start program (or args default-args)
+                                  :input :stream
+                                  :output :stream))
     (tg:finalize instance
                  (lambda ()
                    (external-program:signal-process process 15)))))
