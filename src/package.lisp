@@ -3,17 +3,21 @@
   Copyright (c) 2017 Masataro Asai (guicho2.71828@gmail.com)
 |#
 
+;;; package
+
 (in-package :cl-user)
 (defpackage cl-prolog
   (:use :cl :trivia :alexandria :iterate)
   (:export
-   #:prolog-process
-   #:send-rule
    #:<--
-   #:print-rule))
+   #:prolog-interpreter
+   #:with-prolog-io
+   #:send-rule
+   #:send-rules
+   #:send-query))
 (in-package :cl-prolog)
 
-;; blah blah blah.
+;;; printers
 
 (named-readtables:in-readtable :fare-quasiquote)
 
@@ -21,8 +25,6 @@
 ;; asdf integration (sexp-defined prolog)
 ;; batch execution
 ;; interactive execution
-
-
 
 ;; don't try to do things really complicated.
 ;; do not excessively try to support all subset of prolog.
@@ -71,7 +73,6 @@
     (`(,functor ,@arguments)
       (format stream "~/cl-prolog::print-term/(~/cl-prolog::print-commas/)" functor arguments))))
 
-
 (defun print-rule (stream list colon at)
   (declare (ignorable colon at))
   (match list
@@ -106,6 +107,8 @@
   (declare (ignorable stream obj colon at))
   (constant-fold-printer env whole))
 
+;;; comments
+
 ;; (defun aaa (list)
 ;;   list)
 ;; (define-compiler-macro aaa (&whole whole list &environment env)
@@ -130,9 +133,60 @@
 ;; Retrieving the answer from prolog: findone or findall.
 
 
-;; API.
+;;; API.
 
-(defclass prolog-process () ())
+(defclass prolog-interpreter ()
+  (process
+   (program :initarg :program :allocation :class)
+   (default-args :initarg :default-args :allocation :class)))
 
-(defgeneric send-rule (process rule callback))
+(defmethod initialize-instance ((instance prolog-interpreter) &key args &allow-other-keys)
+  (with-slots (process program default-args) instance
+    (setf process
+          (external-program:start program (or args default-args) :input :stream :output :stream))
+    (tg:finalize instance
+                 (lambda ()
+                   (external-program:signal-process process 15)))))
 
+(defun call-with-prolog-io (instance callback)
+  (with-slots (process) instance
+    (with-accessors ((input external-program:process-input-stream)
+                     (output external-program:process-output-stream)) process
+      (funcall callback input output))))
+
+(defmacro with-prolog-io ((process input output) &body body)
+  `(call-with-prolog-io ,process (lambda (,input ,output)
+                                   (declare (ignorable ,input ,output))
+                                   ,@body)))
+
+(defvar *debug-prolog* t
+  "Flag for debugging the input to the prolog interpreter.
+ Enables verbose output when something is sent the interpreter.")
+
+(defun send-rule (process rule)
+  (send-rules process (list rule)))
+
+(defun send-rules (process rules)
+  (with-prolog-io (process i o)
+    ;; enter the interactive mode
+    (print-rule i '(list user) nil nil)
+    ;; enter rules
+    (dolist (r rules)
+      (when *debug-prolog*
+        (format t "~/cl-prolog::print-rule/" r))
+      (print-rule i r nil nil))
+    (write-char #\EOT i)
+    (finish-output i)
+    (assert (eq 'true. (read o)))))
+
+(defun send-query (process query callback)
+  (with-prolog-io (process i o)
+    (when *debug-prolog* 
+      (format t "~/cl-prolog::print-rule/" query))
+    (print-rule i query nil nil)
+    (finish-output i)
+    (unwind-protect-case ()
+        (loop
+           (funcall callback o)
+           (write-char #\; i))
+      (:abort (write-char #\. i)))))

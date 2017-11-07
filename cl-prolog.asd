@@ -10,7 +10,7 @@
   :author "Masataro Asai"
   :mailto "guicho2.71828@gmail.com"
   :license "MIT"
-  :depends-on (:trivia :alexandria :iterate :trivia.quasiquote)
+  :depends-on (:trivia :alexandria :iterate :trivia.quasiquote :external-program :trivial-garbage)
   :pathname "src"
   :components ((:file "package"))
   :description "Common Interface to the ISO prolog implementations from Common Lisp"

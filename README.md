@@ -31,24 +31,36 @@ They rather implemented a Prolog system by itself, i.e., [programming OR approac
 ## API
 
 This library does not provide implementations, but merely the API to those implementations.
-The sub-libraries of cl-prolog should implement the subclass of `prolog-process` and the following generic functions.
-Instantiating a `prolog-process` should launch a corresponding background process.
+The sub-libraries of cl-prolog should implement the subclass of `prolog-interpreter`
+with `(:default-initargs :program "<program name>" :default-args '("--default" "shell" "arguments"))`.
 
-    (defclass prolog-process () ())
-    (defgeneric send-rule (process rule callback))
+    (defclass swi-prolog (prolog-interpreter) () (:default-initargs "swipl" :default-args '("--quiet")))
 
-`send-rule` should send a single rule described in an S-exp, and receives the
-result.  `callback` should be a function of single argument `stream`, which is
-connected to the process output.  This callback is called when the output
-reached an end-of-file, which happens when the Prolog process returns an answer.
-You can parse the result from the stream. *We don't provide a parser for Prolog
-output* (at least at the moment) and *you must format the Prolog output properly
-in SEXP*.
+Having these default-initargs being set,
+instantiating a `prolog-interpreter` launches a corresponding background process and holds a process object inside it.
+You can override the arguments used to launch the process.
 
-To continue for obtaining more answers, you should return from the fucntion normally.
+    (defvar *swi* (make-instance 'swi-prolog :args '("--nodebug" "--quiet")))
+
+With an instance, you can send rules and queries to this background process.
+
+    (send-rule process rule)
+    (send-rules process rules)
+    (send-query process query (lambda (stream) ...))
+
+`send-rule/s` send a single/multiple SEXP rules as a valid Prolog program after a `[user].` command
+(which allows the interpreter to add new rules/facts from the input),
+then sends an EOT character to finish the input.
+
+`send-query` is almost the same, but
+`callback` should be a function of a single argument `stream`, which is
+connected to the process output. You can parse the result from the stream while `(listen stream)` is true.
+*We don't provide a parser for Prolog output* and *you must format the output from the Prolog side*.
+
+To continue obtaining more answers, you should return from the function normally, in which case `;<Return>` is entered.
 When no more answers are necessary, you should perform a local exit by `go`, `return-from` or `throw`.
-Upon the local exit, `unwind-protect` emits a period `.` to the input stream and tells Prolog to stop the query immediately.
-
+Upon the local exit, `unwind-protect` emits a period `.<Return>` to the input stream and
+tells Prolog to stop the query.
 
 ## Query format
 
