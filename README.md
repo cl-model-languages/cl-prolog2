@@ -1,6 +1,9 @@
 
 # Cl-Prolog - Common Interface to the ISO Prolog implementations from Common Lisp
 
+This is a realization of Marc Kuo's ["modelling approach to OR (operations research)"](https://kuomarc.wordpress.com/2012/03/05/the-uncommon-lisp-approach-to-operations-research/)
+for Prolog language.
+
 This library provides a transpiler from S-expression to
 [ISO-standardized](https://www.iso.org/standard/21413.html) Prolog language,
 and the sub-libraries that invoke State-of-the-Art Prolog compilers
