@@ -13,7 +13,8 @@
     (setf process
           (external-program:start program (or args default-args)
                                   :input :stream
-                                  :output :stream))
+                                  :output :stream
+                                  :error t))
     (tg:finalize instance
                  (lambda ()
                    (external-program:signal-process process 15)))))
