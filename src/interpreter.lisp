@@ -25,12 +25,13 @@
 (defun call-with-prolog-io (instance callback)
   (with-slots (process) instance
     (with-accessors ((input external-program:process-input-stream)
-                     (output external-program:process-output-stream)) process
-      (funcall callback input output))))
+                     (output external-program:process-output-stream)
+                     (error external-program:process-error-stream)) process
+      (funcall callback input output error))))
 
-(defmacro with-prolog-io ((process input output) &body body)
-  `(call-with-prolog-io ,process (lambda (,input ,output)
-                                   (declare (ignorable ,input ,output))
+(defmacro with-prolog-io ((process input output error) &body body)
+  `(call-with-prolog-io ,process (lambda (,input ,output ,error)
+                                   (declare (ignorable ,input ,output ,error))
                                    ,@body)))
 
 (defvar *debug-prolog* t
@@ -41,7 +42,7 @@
   (send-rules process (list rule)))
 
 (defun send-rules (process rules)
-  (with-prolog-io (process i o)
+  (with-prolog-io (process i o e)
     ;; enter the interactive mode
     (when *debug-prolog*
       (format t "~&; ~/cl-prolog::print-rule/" '(list user)))
@@ -60,7 +61,7 @@
     (clear-input o)))
 
 (defun send-query (process query callback)
-  (with-prolog-io (process i o)
+  (with-prolog-io (process i o e)
     (when *debug-prolog* 
       (format t "~&; ~/cl-prolog::print-rule/" query))
     (print-rule i query nil nil)
