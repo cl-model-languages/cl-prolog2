@@ -18,5 +18,6 @@ $ update-asdf
 
 
 ((:package)
+ (:compiler-macro)
  (:rest))
 
