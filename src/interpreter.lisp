@@ -45,7 +45,7 @@
     ;; enter rules
     (dolist (r rules)
       (when *debug-prolog*
-        (format t "~/cl-prolog::print-rule/" r))
+        (format t "~&; ~/cl-prolog::print-rule/" r))
       (print-rule i r nil nil))
     (write-char #\EOT i)
     (finish-output i)
@@ -54,7 +54,7 @@
 (defun send-query (process query callback)
   (with-prolog-io (process i o)
     (when *debug-prolog* 
-      (format t "~/cl-prolog::print-rule/" query))
+      (format t "~&; ~/cl-prolog::print-rule/" query))
     (print-rule i query nil nil)
     (finish-output i)
     (unwind-protect-case ()
