@@ -57,10 +57,9 @@ then sends an EOT character to finish the input.
 connected to the process output. You can parse the result from the stream while `(listen stream)` is true.
 *We don't provide a parser for Prolog output* and *you must format the output from the Prolog side*.
 
-To continue obtaining more answers, you should return from the function normally, in which case `;<Return>` is entered.
-When no more answers are necessary, you should perform a local exit by `go`, `return-from` or `throw`.
-Upon the local exit, `unwind-protect` emits a period `.<Return>` to the input stream and
-tells Prolog to stop the query.
+To continue obtaining more answers, the callback should return a non-nil, in which case `;<Return>` is entered.
+When no more answers are necessary, it should return `nil` or perform a local exit by `go`, `return-from` or `throw`,
+then it emits `.<Return>` to tell Prolog to stop the query.
 
 Finally, you can terminate an interpreter by a function `terminate`.
 

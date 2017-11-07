@@ -49,7 +49,9 @@
       (print-rule i r nil nil))
     (write-char #\EOT i)
     (finish-output i)
-    (assert (eq 'true. (read o)))))
+    ;; (assert (eq 'true. (read o)))
+    ;; consume all outputs. Especially "true.".
+    (clear-input o)))
 
 (defun send-query (process query callback)
   (with-prolog-io (process i o)
@@ -57,8 +59,16 @@
       (format t "~&; ~/cl-prolog::print-rule/" query))
     (print-rule i query nil nil)
     (finish-output i)
-    (unwind-protect-case ()
-        (loop
-           (funcall callback o)
-           (write-char #\; i))
-      (:abort (write-char #\. i)))))
+    (unwind-protect
+         (loop
+            while (funcall callback o)
+            do
+            ;; callback may not consume all outputs; make sure no more output is left
+              (clear-input o)
+            ;; ask for more queries
+              (write-char #\; i)
+              (finish-output i))
+      ;; no more queries
+      (write-char #\. i)
+      (finish-output i)
+      (clear-input o))))
