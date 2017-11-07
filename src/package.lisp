@@ -81,7 +81,43 @@
     (_
      (format stream "~/cl-prolog::print-term/.~%" list))))
 
-  
+(defun constant-fold-printer (env whole)
+  (match whole
+    ((or `(,fn ,stream ,obj ,_ ,_)
+         `(funcall ,fn ,stream ,obj ,_ ,_))
+      (if (constantp obj env)
+          `(write-string ,(with-output-to-string (s)
+                            (funcall fn s obj nil nil))
+                         ,stream)
+          whole))
+    (_
+     whole)))
+
+(define-compiler-macro print-rule (&whole whole stream obj colon at &environment env)
+  (declare (ignorable stream obj colon at))
+  (constant-fold-printer env whole))
+(define-compiler-macro print-term (&whole whole stream obj colon at &environment env)
+  (declare (ignorable stream obj colon at))
+  (constant-fold-printer env whole))
+(define-compiler-macro print-commas (&whole whole stream obj colon at &environment env)
+  (declare (ignorable stream obj colon at))
+  (constant-fold-printer env whole))
+(define-compiler-macro print-semicolons (&whole whole stream obj colon at &environment env)
+  (declare (ignorable stream obj colon at))
+  (constant-fold-printer env whole))
+
+;; (defun aaa (list)
+;;   list)
+;; (define-compiler-macro aaa (&whole whole list &environment env)
+;;   (if (constantp list env)
+;;       (progn (print :constant!)
+;;              whole)
+;;       (progn (print :not-constant!)
+;;              whole)))
+;; (defun fn (list)
+;;   (aaa list)
+;;   (aaa '(a b c)))
+
 ;; > < is ->  + *
 ;; write-canonical
 ;; 
