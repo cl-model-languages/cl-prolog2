@@ -51,8 +51,9 @@
       (format stream "(~/cl-prolog::print-commas/)" terms))
     (`(or ,@terms)
       (format stream "(~/cl-prolog::print-semicolons/)" terms))
-    (`(:- ,@arguments)
-      (format stream ":-(~/cl-prolog::print-commas/)" arguments))
+    (`(:- ,head ,@rest)
+      (format stream "~/cl-prolog::print-term/ :- (~{~/cl-prolog::print-term/~^,~})"
+              head rest))
     (`(,functor ,@arguments)
       (format stream "~/cl-prolog::print-term/(~/cl-prolog::print-commas/)" functor arguments))))
 
@@ -60,7 +61,7 @@
   (declare (ignorable colon at))
   (match list
     (`(,(or :- '<--) ,head ,@rest)
-      (format stream "~/cl-prolog::print-term/ :- ~{~/cl-prolog::print-term/~^,~}.~%"
+      (format stream "~/cl-prolog::print-term/ :- (~{~/cl-prolog::print-term/~^,~}).~%"
               head rest))
     (_
      (format stream "~/cl-prolog::print-term/.~%" list))))
