@@ -47,7 +47,7 @@ Upon the local exit, `unwind-protect` emits a period `.` to the input stream and
 
 Query format mostly follows the Allegro Prolog (which is a fork of PAIP Prolog).
 
-    rule : (<-- top-term top-term*) | top-term
+    rule : (<-- top-term top-term*) | (:- top-term top-term*) | top-term
     
     top-term : ('not term) | ( atom term* )
     
@@ -59,8 +59,7 @@ Query format mostly follows the Allegro Prolog (which is a fork of PAIP Prolog).
     
     builtins : ('list term*) | ('list* term*) | ('not term) | ('or term*) | ('and term*)
     
-    
-Variables are given to the Prolog interpreter as capitalized symbols.
+Variables are given to the Prolog interpreter as underscored symbols. `:-` and `<--` are equivalent.
 
 ## Dependencies
 This library is at least tested on implementation listed below:
