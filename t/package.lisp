@@ -8,7 +8,7 @@
   (:use :cl
         :cl-prolog
         :fiveam
-        :trivia :alexandria :iterate))
+        :trivia :alexandria))
 (in-package :cl-prolog.test)
 
 

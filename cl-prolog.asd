@@ -12,7 +12,6 @@
  :license "MIT"
  :depends-on (:trivia
               :alexandria
-              :iterate
               :trivia.quasiquote
               :external-program
               :trivial-garbage)

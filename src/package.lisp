@@ -7,7 +7,7 @@
 
 (in-package :cl-user)
 (defpackage cl-prolog
-  (:use :cl :trivia :alexandria :iterate)
+  (:use :cl :trivia :alexandria)
   (:export
    #:<--
    #:prolog-interpreter
