@@ -43,12 +43,16 @@
 (defun send-rules (process rules)
   (with-prolog-io (process i o)
     ;; enter the interactive mode
+    (when *debug-prolog*
+      (format t "~&; ~/cl-prolog::print-rule/" '(list user)))
     (print-rule i '(list user) nil nil)
     ;; enter rules
     (dolist (r rules)
       (when *debug-prolog*
         (format t "~&; ~/cl-prolog::print-rule/" r))
       (print-rule i r nil nil))
+    (when *debug-prolog*
+      (format t "~&; EOT"))
     (write-char #\EOT i)
     (finish-output i)
     ;; (assert (eq 'true. (read o)))
