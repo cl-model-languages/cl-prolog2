@@ -16,13 +16,17 @@ such as SWI-prolog, XSB, Yap.
 
 Choose the one with the best performance for your application.
 
+## Related work
+
 It looks like https://github.com/keithj/cl-prolog has similar things in mind, and
 it has more careful considerations regarding which names are accepted by the Prolog language spec.
+However, I don't do such a complicated thing; if it works it's fine.
+Be just careful whichever character you use for your symbols.
+Also, it seems to have painfully gone through the FFI binding. I definitely won't do the same.
 
-However, I don't do complicated things; if it works it's fine.
-Be just careful which character you use for your symbols.
-
-**EDIT** keithj/cl-prolog seems to have painfully gone through the FFI binding. I definitely won't do the same.
+There are already many lisp-to-prolog libraries, including the one mentioned above, but
+also Allegro Prolog, PAIP prolog and the Prolog in On Lisp are the famous ones.
+They rather implemented a Prolog system by itself, i.e., [programming OR approach](https://kuomarc.wordpress.com/2012/03/05/the-uncommon-lisp-approach-to-operations-research/).
 
 ## API
 
