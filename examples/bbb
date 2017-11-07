@@ -1,0 +1,3 @@
+assert(factorial(0,1)).
+assert(factorial(N,F) :- (>(N,0),is(N1,-(N,1)),factorial(N1,F1),is(F,*(N,F1)))).
+factorial(3,W).

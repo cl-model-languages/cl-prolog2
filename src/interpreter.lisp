@@ -42,6 +42,7 @@
 (defun send-rule (process rule)
   (send-rules process (list rule)))
 
+#+(or)                                  ;doesnt seem to recognize EOT characters.
 (defun send-rules (process rules)
   (with-prolog-io (process i o e)
     ;; enter the interactive mode
@@ -60,6 +61,21 @@
     ;; (assert (eq 'true. (read o)))
     ;; consume all outputs. Especially "true.".
     (clear-input o)))
+
+(defun send-rules (process rules)
+  (with-prolog-io (process i o e)
+    ;; enter the interactive mode
+    ;; (when *debug-prolog*
+    ;;   (format t "~&; ~/cl-prolog::print-rule/" `(assertz (and ,@rules))))
+    ;; (print-rule i  `(assertz (and ,@rules)) nil nil)
+    (dolist (r rules)
+      (when *debug-prolog*
+        (format t "~&; ~/cl-prolog::print-rule/" `(assertz ,r)))
+      (print-rule i  `(assertz ,r) nil nil)
+      (finish-output i)
+      (read-char o)
+      (clear-input o))))
+
 
 (defun send-query (process query callback)
   (with-prolog-io (process i o e)
