@@ -73,7 +73,6 @@
         (format t "~&; ~/cl-prolog::print-rule/" `(assertz ,r)))
       (print-rule i  `(assertz ,r) nil nil)
       (finish-output i)
-      (read-char o)
       (clear-input o))))
 
 
