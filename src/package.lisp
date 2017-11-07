@@ -14,7 +14,8 @@
    #:with-prolog-io
    #:send-rule
    #:send-rules
-   #:send-query))
+   #:send-query
+   #:terminate))
 (in-package :cl-prolog)
 
 ;;; printers
@@ -147,6 +148,10 @@
     (tg:finalize instance
                  (lambda ()
                    (external-program:signal-process process 15)))))
+
+(defun terminate (instance)
+  (with-slots (process) instance
+    (external-program:signal-process process 15)))
 
 (defun call-with-prolog-io (instance callback)
   (with-slots (process) instance

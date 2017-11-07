@@ -62,6 +62,8 @@ When no more answers are necessary, you should perform a local exit by `go`, `re
 Upon the local exit, `unwind-protect` emits a period `.<Return>` to the input stream and
 tells Prolog to stop the query.
 
+Finally, you can terminate an interpreter by a function `terminate`.
+
 ## Query format
 
 Query format mostly follows the Allegro Prolog (which is a fork of PAIP Prolog).
