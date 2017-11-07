@@ -34,7 +34,7 @@ This library does not provide implementations, but merely the API to those imple
 The sub-libraries of cl-prolog should implement the subclass of `prolog-interpreter`
 with `(:default-initargs :program "<program name>" :default-args '("--default" "shell" "arguments"))`.
 
-    (defclass swi-prolog (prolog-interpreter) () (:default-initargs "swipl" :default-args '("--quiet")))
+    (defclass swi-prolog (prolog-interpreter) () (:default-initargs :program "swipl" :default-args '("--quiet")))
 
 Having these default-initargs being set,
 instantiating a `prolog-interpreter` launches a corresponding background process and holds a process object inside it.
