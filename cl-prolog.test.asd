@@ -16,6 +16,7 @@
   :description "Test system of cl-prolog"
   :license "MIT"
   :depends-on (:cl-prolog
+               :iterate
                :fiveam)
   :components ((:module "t"
                 :components
