@@ -48,8 +48,10 @@
   (send-rules process (list rule)))
 
 #+(or)
-;; doesnt seem to recognize EOT characters.
 (defun send-rules (process rules)
+  ;; Doesnt seem to recognize EOT characters.
+  ;; Maybe pty works, but :tty option for run-program is sbcl specific.
+  ;; Can we avoid it from the shell script side?
   (with-prolog-io (process i o e)
     ;; enter the interactive mode
     (%print-rule i '(list user))
@@ -64,7 +66,9 @@
     ;; consume all outputs. Especially "true.".
     (clear-input o)))
 
+#+(or)
 (defun send-rules (process rules)
+  ;; Using assertz to enter the rule.
   (with-prolog-io (process i o e)
     ;; enter the interactive mode
     ;; (when *debug-prolog*
@@ -74,6 +78,20 @@
       (%print-rule i `(assertz ,r))
       (finish-output i)
       (clear-input o))))
+
+(defun send-rules (process rules)
+  (with-prolog-io (process i o e)
+    ;; enter the interactive mode
+    (%print-rule i '(list user))
+    ;; enter rules
+    (dolist (r rules)
+      (%print-rule i r))
+    (%print-rule i 'end_of_file)
+    (finish-output i)
+    ;; (assert (eq 'true. (read o)))
+    ;; consume all outputs. Especially "true.".
+    (clear-input o)))
+
 
 
 (defun send-query (process query callback)
