@@ -65,9 +65,7 @@ Finally, you can terminate an interpreter by a function `terminate`.
 
 ## Query format
 
-Query format mostly follows the Allegro Prolog (which is a fork of PAIP Prolog).
-
-    rule : (<-- top-term top-term*) | (:- top-term top-term*) | top-term
+    rule : (:- top-term top-term*) | top-term
     
     top-term : ('not term) | ( atom term* )
     
