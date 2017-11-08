@@ -82,22 +82,21 @@
 (defgeneric send-rules (process rules))
 (defmethod send-rules ((process prolog-interpreter) (rules list))
   (with-prolog-io (process i o e)
+    (clear-input o)
     ;; enter the interactive mode
     (%print-rule i '(list user))
     ;; enter rules
     (dolist (r rules)
       (%print-rule i r))
     (%print-rule i 'end_of_file)
-    (finish-output i)
-    ;; (assert (eq 'true. (read o)))
-    ;; consume all outputs. Especially "true.".
-    (clear-input o)))
+    (finish-output i)))
 
 
 
 (defgeneric send-query (process query callback))
 (defmethod send-query ((process prolog-interpreter) query callback)
   (with-prolog-io (process i o e)
+    (clear-input o)
     (%print-rule i query)
     (finish-output i)
     (unwind-protect
@@ -111,5 +110,4 @@
               (finish-output i))
       ;; no more queries
       (write-char #\. i)
-      (finish-output i)
-      (clear-input o))))
+      (finish-output i))))
