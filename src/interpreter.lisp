@@ -79,7 +79,8 @@
       (finish-output i)
       (clear-input o))))
 
-(defun send-rules (process rules)
+(defgeneric send-rules (process rules))
+(defmethod send-rules ((process prolog-interpreter) (rules list))
   (with-prolog-io (process i o e)
     ;; enter the interactive mode
     (%print-rule i '(list user))
@@ -94,7 +95,8 @@
 
 
 
-(defun send-query (process query callback)
+(defgeneric send-query (process query callback))
+(defmethod send-query ((process prolog-interpreter) query callback)
   (with-prolog-io (process i o e)
     (%print-rule i query)
     (finish-output i)
