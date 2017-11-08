@@ -15,7 +15,7 @@
     (_
      whole)))
 
-(define-compiler-macro print-rule (&whole whole stream obj colon at &environment env)
+(define-compiler-macro %print-rule (&whole whole stream obj colon at &environment env)
   (declare (ignorable stream obj colon at))
   (constant-fold-printer env whole))
 (define-compiler-macro print-term (&whole whole stream obj colon at &environment env)

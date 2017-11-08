@@ -39,10 +39,10 @@
   "Flag for debugging the input to the prolog interpreter.
  Enables verbose output when something is sent the interpreter.")
 
-(defun %print-rule (stream rule)
+(defun print-rule (stream rule)
   (when *debug-prolog*
-    (format t "~&; ~/cl-prolog::print-rule/" rule))
-  (print-rule stream rule nil nil))
+    (format t "~&; ~/cl-prolog::%print-rule/" rule))
+  (%print-rule stream rule nil nil))
 
 (defun send-rule (process rule)
   (send-rules process (list rule)))
@@ -54,10 +54,10 @@
   ;; Can we avoid it from the shell script side?
   (with-prolog-io (process i o e)
     ;; enter the interactive mode
-    (%print-rule i '(list user))
+    (print-rule i '(list user))
     ;; enter rules
     (dolist (r rules)
-      (%print-rule i r))
+      (print-rule i r))
     (when *debug-prolog*
       (format t "~&; EOT"))
     (write-char #\EOT i)
@@ -72,10 +72,10 @@
   (with-prolog-io (process i o e)
     ;; enter the interactive mode
     ;; (when *debug-prolog*
-    ;;   (format t "~&; ~/cl-prolog::print-rule/" `(assertz (and ,@rules))))
+    ;;   (format t "~&; ~/cl-prolog::%print-rule/" `(assertz (and ,@rules))))
     ;; (print-rule i  `(assertz (and ,@rules)) nil nil)
     (dolist (r rules)
-      (%print-rule i `(assertz ,r))
+      (print-rule i `(assertz ,r))
       (finish-output i)
       (clear-input o))))
 
@@ -84,11 +84,11 @@
   (with-prolog-io (process i o e)
     (clear-input o)
     ;; enter the interactive mode
-    (%print-rule i '(list user))
+    (print-rule i '(list user))
     ;; enter rules
     (dolist (r rules)
-      (%print-rule i r))
-    (%print-rule i 'end_of_file)
+      (print-rule i r))
+    (print-rule i 'end_of_file)
     (finish-output i)))
 
 
@@ -97,7 +97,7 @@
 (defmethod send-query ((process prolog-interpreter) query callback)
   (with-prolog-io (process i o e)
     (clear-input o)
-    (%print-rule i query)
+    (print-rule i query)
     (finish-output i)
     (unwind-protect
          (loop

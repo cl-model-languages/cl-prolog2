@@ -15,7 +15,8 @@
    #:send-rule
    #:send-rules
    #:send-query
-   #:terminate))
+   #:terminate
+   #:print-rule))
 (in-package :cl-prolog)
 
 ;;; comments

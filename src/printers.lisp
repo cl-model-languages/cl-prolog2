@@ -15,7 +15,7 @@
 (declaim (ftype (function (stream * boolean boolean))
                 print-commas
                 print-term
-                print-rule))
+                %print-rule))
 
 (defun print-commas (stream list colon at)
   (declare (ignorable colon at))
@@ -57,6 +57,6 @@
     (`(,functor ,@arguments)
       (format stream "~/cl-prolog::print-term/(~/cl-prolog::print-commas/)" functor arguments))))
 
-(defun print-rule (stream list colon at)
+(defun %print-rule (stream list colon at)
   (declare (ignorable colon at))
   (format stream "~/cl-prolog::print-term/.~%" list))
