@@ -64,8 +64,10 @@
                 (lambda (output)
                   (iter (with start = (get-universal-time))
                         (for now = (get-universal-time))
-                        (while (< (- now start) 3))
+                        (when (> (- now start) 3)
+                          (error "timeout!"))
                         (until (listen output)))
+                  (is (eql #\6 (peek-char nil output)))
                   (is (= 6 (read output)))
                   nil))))
 
