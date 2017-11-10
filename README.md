@@ -9,10 +9,10 @@ This library provides a transpiler from S-expression to
 and the sub-libraries that invoke State-of-the-Art Prolog compilers
 such as SWI-prolog, XSB, Yap.
 
-* https://github.com/guicho271828/cl-prolog.swi
-* https://github.com/guicho271828/cl-prolog.yap
-* https://github.com/guicho271828/cl-prolog.xsb
-* https://github.com/guicho271828/cl-prolog.gprolog
+* https://github.com/guicho271828/cl-prolog.swi (working)
+* https://github.com/guicho271828/cl-prolog.yap (working)
+* https://github.com/guicho271828/cl-prolog.gprolog (not really easy to handle)
+* https://github.com/guicho271828/cl-prolog.xsb (not even managed to build it yet)
 
 Choose the one with the best performance for your application.
 
