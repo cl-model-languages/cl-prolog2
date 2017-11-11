@@ -13,6 +13,7 @@ such as SWI-prolog, XSB, Yap.
 * https://github.com/guicho271828/cl-prolog.yap (working)
 * https://github.com/guicho271828/cl-prolog.gprolog (not really easy to handle)
 * https://github.com/guicho271828/cl-prolog.xsb (not even managed to build it yet)
+* https://github.com/guicho271828/cl-prolog.bprolog (trying)
 
 Choose the one with the best performance for your application.
 
