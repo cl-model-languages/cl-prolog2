@@ -51,6 +51,9 @@
       (format stream "(~/cl-prolog::print-commas/)" terms))
     (`(or ,@terms)
       (format stream "(~/cl-prolog::print-semicolons/)" terms))
+    (`(:- ,head)
+      (format stream "(:- ~/cl-prolog::print-term/)"
+              head))
     (`(:- ,head ,@rest)
       (format stream "(~/cl-prolog::print-term/ :- (~{~/cl-prolog::print-term/~^,~}))"
               head rest))
