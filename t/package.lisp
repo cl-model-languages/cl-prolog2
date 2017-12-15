@@ -79,7 +79,11 @@
   (with-impl (p)
     
     (finishes
-      (send-rules p `((:- (perm (list* ?x ?y) ?z)
+      (send-rules p `(;; note: this overwrites swi-prolog's builtin
+                      (member ?x (list* ?x ?rest))
+                      (:- (member ?x (list* ?y ?rest))
+                          (member ?x ?rest))
+                      (:- (perm (list* ?x ?y) ?z)
                           (perm ?y ?w)
                           (takeout ?x ?z ?w))
                       (perm (list) (list))
