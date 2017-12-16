@@ -10,6 +10,9 @@ and the sub-libraries that invoke State-of-the-Art Prolog compilers
 such as SWI-prolog, XSB, Yap.
 Choose the one with the *best performance for your application*.
 
+**News** We changed the implementation to use the batch-mode only, since the behavior of Prolog top-level loop
+is not defined in the ISO standard, and it is hard to maintain the compatibility between different interpreters.
+
 ## Related work
 
 It looks like https://github.com/keithj/cl-prolog has similar things in mind, and
@@ -26,44 +29,13 @@ They rather implemented a Prolog system by itself, i.e., [programming OR approac
 
 The ASDF system `cl-prolog` does not provide implementations, but merely the API to those implementations.
 The sub-libraries of `cl-prolog` are in the corresponding sub-directories.
-They should implement a subclass of `prolog-interpreter`
-with `(:default-initargs :program "<program name>" :default-args '("--default" "shell" "arguments"))`.
 
-    (defclass swi-prolog (prolog-interpreter) () (:default-initargs :program "swipl" :default-args '("--quiet")))
+They should implement a method `(run-prolog rules prolog-designator)`, where `prolog-designator` is a keyword symbol
+such as `:swi` or `:yap`.
+The function returns the output of the process as a string.
 
-Having these default-initargs being set,
-instantiating a `prolog-interpreter` launches a corresponding background process and holds a process object inside it.
-You can override the arguments used to launch the process.
-
-    (defvar *swi* (make-instance 'swi-prolog :args '("--nodebug" "--quiet")))
-
-With an instance, you can send rules and queries to this background process.
-
-    (send-rule process rule)
-    (send-rules process rules)
-    (send-query process query (lambda (stream) ...))
-
-`send-rules` and `send-query` are generic functions. Therefore, impl-specific deviation should be absorbed by
-implementing a primary method. A method for `prolog-interpreter` is provided by default.
-
-As the name suggests,
-`send-rule/s` send a single/multiple SEXP rules as a valid Prolog program after a `[user].` command
-(which allows the interpreter to add new rules/facts from the input),
-then sends `end_of_file.` rule to finish the input.
-
-`send-query` is almost the same, but
-`callback` should be a function of a single argument `stream`, which is
-connected to the process output. You can parse the result from the stream while `(listen stream)` is true.
 **We don't provide a parser for Prolog output** and, therefore,
-**you must format the output on the Prolog side** or **parse the output from the lisp side**.
-
-To continue obtaining more answers, the callback should return a non-nil, in which case `;<Return>` is entered.
-When no more answers are necessary, it should return `nil` or perform a local exit by `go`, `return-from` or `throw`.
-In such cases it emits `.<Return>` to tell the interpreter to stop the query.
-
-Finally, you can terminate an interpreter by a function `terminate`.
-However, background prolog processes are terminated when
-the corresponding `prolog-interpreter` instance is garbage collected.
+**formatting the output should be done on behalf of Prolog program** or you should **write a parser from lisp**.
 
 ## Query format
 
