@@ -85,9 +85,10 @@
          (read-from-string
           (print
            (run-prolog `(;; note: this overwrites swi-prolog's builtin
-                         (member ?x (list* ?x ?rest))
-                         (:- (member ?x (list* ?y ?rest))
-                             (member ?x ?rest))
+                         ,@(when (eq *interpreter-class* :yap)
+                             `((member ?x (list* ?x ?rest))
+                               (:- (member ?x (list* ?y ?rest))
+                                   (member ?x ?rest))))
                          ;; perm
                          (:- (perm (list* ?x ?y) ?z)
                              (perm ?y ?w)
