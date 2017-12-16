@@ -8,14 +8,7 @@ This library provides a transpiler from S-expression to
 [ISO-standardized](https://www.iso.org/standard/21413.html) Prolog language,
 and the sub-libraries that invoke State-of-the-Art Prolog compilers
 such as SWI-prolog, XSB, Yap.
-
-* https://github.com/guicho271828/cl-prolog.swi (working)
-* https://github.com/guicho271828/cl-prolog.yap (working)
-* https://github.com/guicho271828/cl-prolog.gprolog (not really easy to handle)
-* https://github.com/guicho271828/cl-prolog.xsb (not even managed to build it yet)
-* https://github.com/guicho271828/cl-prolog.bprolog (trying)
-
-Choose the one with the best performance for your application.
+Choose the one with the *best performance for your application*.
 
 ## Related work
 
@@ -31,8 +24,9 @@ They rather implemented a Prolog system by itself, i.e., [programming OR approac
 
 ## API
 
-This library does not provide implementations, but merely the API to those implementations.
-The sub-libraries of cl-prolog should implement the subclass of `prolog-interpreter`
+The ASDF system `CL-PROLOG` does not provide implementations, but merely the API to those implementations.
+The sub-libraries of cl-prolog are in the corresponding sub-directories.
+They should implement the subclass of `prolog-interpreter`
 with `(:default-initargs :program "<program name>" :default-args '("--default" "shell" "arguments"))`.
 
     (defclass swi-prolog (prolog-interpreter) () (:default-initargs :program "swipl" :default-args '("--quiet")))
