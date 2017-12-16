@@ -19,7 +19,19 @@
         (dolist (r rules)
           (print-rule s r))
         (print-rule s '(:- (initialization halt))))
-      
-      (uiop:run-program `(,(namestring (asdf:system-relative-pathname :cl-prolog.bprolog "BProlog/bp"))
-                           "-i" ,input-file) :output '(:string :stripped t)))))
+      ;; remove the banner
+      (let* ((out (uiop:run-program `(,(namestring (asdf:system-relative-pathname :cl-prolog.bprolog "BProlog/bp"))
+                                       "-i" ,input-file)
+                                    :output :string))
+             (pos (loop with count = 0
+                     until (= count 2)
+                     for i from 0
+                     do
+                       (when (char= (aref out i) #\Newline)
+                         (incf count))
+                     finally (return i))))
+        (make-array (- (length out) pos 1)
+                    :element-type 'character
+                    :displaced-to out
+                    :displaced-index-offset (1+ pos))))))
 
