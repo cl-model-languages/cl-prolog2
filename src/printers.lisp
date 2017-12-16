@@ -40,7 +40,7 @@
           (if (zerop i)
               (write-char #\_ stream)
               (if (alphanumericp c)
-                  (write-char c stream)
+                  (write-char (char-downcase c) stream)
                   (write-char #\_ stream)))))
     ((symbol name)
      (write-char #\' stream)
