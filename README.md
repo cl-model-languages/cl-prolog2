@@ -24,9 +24,9 @@ They rather implemented a Prolog system by itself, i.e., [programming OR approac
 
 ## API
 
-The ASDF system `CL-PROLOG` does not provide implementations, but merely the API to those implementations.
-The sub-libraries of cl-prolog are in the corresponding sub-directories.
-They should implement the subclass of `prolog-interpreter`
+The ASDF system `cl-prolog` does not provide implementations, but merely the API to those implementations.
+The sub-libraries of `cl-prolog` are in the corresponding sub-directories.
+They should implement a subclass of `prolog-interpreter`
 with `(:default-initargs :program "<program name>" :default-args '("--default" "shell" "arguments"))`.
 
     (defclass swi-prolog (prolog-interpreter) () (:default-initargs :program "swipl" :default-args '("--quiet")))
@@ -54,13 +54,15 @@ then sends `end_of_file.` rule to finish the input.
 `send-query` is almost the same, but
 `callback` should be a function of a single argument `stream`, which is
 connected to the process output. You can parse the result from the stream while `(listen stream)` is true.
-**We don't provide a parser for Prolog output** and **you must format the output on the Prolog side**.
+**We don't provide a parser for Prolog output** and, therefore,
+**you must format the output on the Prolog side** or **parse the output from the lisp side**.
+
 To continue obtaining more answers, the callback should return a non-nil, in which case `;<Return>` is entered.
 When no more answers are necessary, it should return `nil` or perform a local exit by `go`, `return-from` or `throw`.
 In such cases it emits `.<Return>` to tell the interpreter to stop the query.
 
 Finally, you can terminate an interpreter by a function `terminate`.
-However, background Prolog processes are terminated when
+However, background prolog processes are terminated when
 the corresponding `prolog-interpreter` instance is garbage collected.
 
 ## Query format
@@ -77,7 +79,8 @@ the corresponding `prolog-interpreter` instance is garbage collected.
     
     builtins : ('list term*) | ('list* term*) | ('not term) | ('or term*) | ('and term*)
     
-Variables are given to the Prolog interpreter as underscored symbols. `:-` and `<--` are equivalent.
+Variables are given to the Prolog interpreter as underscored symbols, and
+note that **all non-alphanumeric characters are converted to underscores**.
 
 ## Dependencies
 This library is at least tested on implementation listed below:

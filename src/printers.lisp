@@ -30,13 +30,22 @@
 (defun print-term (stream term colon at)
   (declare (ignorable colon at))
   (ematch term
-    ((symbol :name (and name (string* #\?)))
-     (write-string (string-capitalize name) stream :start 1)
-     ;; (write-char #\_ stream)
-     ;; (write-string name stream :start 1)
-     )
+    ((symbol :name (and name (or (string* #\?)
+                                 (string* #\_))))
+     ;; variables
+     (loop
+        for c across name
+        for i from 0
+        do
+          (if (zerop i)
+              (write-char #\_ stream)
+              (if (alphanumericp c)
+                  (write-char c stream)
+                  (write-char #\_ stream)))))
     ((symbol name)
-     (write-string (string-downcase name) stream))
+     (write-char #\' stream)
+     (write-string (string-downcase name) stream)
+     (write-char #\' stream))
     ((string*)
      (format stream "'~a'" term))
     ((number)

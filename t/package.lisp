@@ -24,6 +24,8 @@
 ;; run test with (run! test-name) 
 
 (test cl-prolog
+  (finishes (print-rule *standard-output* 'atom))
+  (finishes (print-rule *standard-output* 'atom-with-hyphen))
   (finishes (print-rule *standard-output* '(:- (a b c) (a ?b c) (a b c))))
   (finishes (print-rule *standard-output* '(:-(a b c) (a _b c) (a b c))))
   (finishes (print-rule *standard-output* '(a b c)))
@@ -40,6 +42,36 @@
     (send-query p '(write "hello world\\n")
                 (lambda (output)
                   (is (equal "hello world" (read-line output)))
+                  nil))))
+
+(test symbol-name-test
+  (with-prolog-process (p *interpreter-class*)
+    
+    (finishes
+      (send-rules p `((parent-of luke-skywalker anakin-skywalker))))
+    
+    (send-query p `(and (parent-of luke-skywalker ?x)
+                        (write ?x)
+                        (write "\\n")
+                        fail)
+                (lambda (output)
+                  (iter (with start = (get-universal-time))
+                        (for now = (get-universal-time))
+                        (while (< (- now start) 3))
+                        (until (listen output)))
+                  (is (equal 'anakin-skywalker (print (read output))))
+                  nil))
+    
+    (send-query p `(and (parent-of luke-skywalker ?who-is-it)
+                        (write ?who-is-it)
+                        (write "\\n")
+                        fail)
+                (lambda (output)
+                  (iter (with start = (get-universal-time))
+                        (for now = (get-universal-time))
+                        (while (< (- now start) 3))
+                        (until (listen output)))
+                  (is (equal 'anakin-skywalker (read output)))
                   nil))))
 
 (test factorial
