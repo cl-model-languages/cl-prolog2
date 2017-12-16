@@ -17,7 +17,9 @@
     (with-temp (input-file :tmpdir d :template "XXXXXX.pl" :debug debug)
       (with-open-file (s input-file :direction :output :if-does-not-exist :error)
         (dolist (r rules)
-          (print-rule s r)))
-      (uiop:run-program `(,(asdf:system-relative-pathname :cl-prolog.bprolog "BProlog/bp")
-                           "-l" ,input-file) :output '(:string :stripped t)))))
+          (print-rule s r))
+        (print-rule s '(:- (initialization halt))))
+      
+      (uiop:run-program `(,(namestring (asdf:system-relative-pathname :cl-prolog.bprolog "BProlog/bp"))
+                           "-i" ,input-file) :output '(:string :stripped t)))))
 
