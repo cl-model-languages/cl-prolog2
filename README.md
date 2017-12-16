@@ -55,17 +55,19 @@ implementing a primary method. A method for `prolog-interpreter` is provided by 
 As the name suggests,
 `send-rule/s` send a single/multiple SEXP rules as a valid Prolog program after a `[user].` command
 (which allows the interpreter to add new rules/facts from the input),
-then sends an EOT character to finish the input.
+then sends `end_of_file.` rule to finish the input.
 
 `send-query` is almost the same, but
 `callback` should be a function of a single argument `stream`, which is
 connected to the process output. You can parse the result from the stream while `(listen stream)` is true.
 **We don't provide a parser for Prolog output** and **you must format the output on the Prolog side**.
 To continue obtaining more answers, the callback should return a non-nil, in which case `;<Return>` is entered.
-When no more answers are necessary, it should return `nil` or perform a local exit by `go`, `return-from` or `throw`,
-then it emits `.<Return>` to tell Prolog to stop the query.
+When no more answers are necessary, it should return `nil` or perform a local exit by `go`, `return-from` or `throw`.
+In such cases it emits `.<Return>` to tell the interpreter to stop the query.
 
 Finally, you can terminate an interpreter by a function `terminate`.
+However, background Prolog processes are terminated when
+the corresponding `prolog-interpreter` instance is garbage collected.
 
 ## Query format
 
