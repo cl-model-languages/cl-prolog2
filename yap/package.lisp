@@ -12,21 +12,12 @@
 
 ;; blah blah blah.
 
-(defclass yap (prolog-interpreter)
-  ()
-  (:default-initargs :program "yap" :default-args '()))
+(defmethod run-prolog ((rules list) (prolog-designator (eql :yap)) &key debug)
+  (with-temp (d :directory t :debug debug)
+    (with-temp (input-file :tmpdir d :template "XXXXXX.pl" :debug debug)
+      (with-open-file (s input-file :direction :output :if-does-not-exist :error)
+        (print-rule s '(:- (set_prolog_flag unknown error)))
+        (dolist (r rules)
+          (print-rule s r)))
+      (uiop:run-program `("yap" "-l" ,input-file) :output '(:string :stripped t)))))
 
-#+(or)
-(defmethod send-rules :after ((process yap) (rules list))
-  (with-prolog-io (process i o e)
-    (assert (string= 'yes (read o)))))
-
-#+(or)
-(defmethod send-query :after ((process prolog-interpreter) query callback)
-  (with-prolog-io (process i o e)
-    ))
-
-(defmethod initialize-instance :after ((instance yap) &key &allow-other-keys)
-  (send-rule instance '(:- (set_prolog_flag unknown error))))
-
-(pushnew '(:yap . yap) *interpreter-classes* :test 'equal)

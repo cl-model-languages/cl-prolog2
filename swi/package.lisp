@@ -12,17 +12,11 @@
 
 ;; blah blah blah.
 
-(defclass swi (prolog-interpreter)
-  ()
-  (:default-initargs :program "swipl" :default-args '("--quiet")))
-
-(defmethod send-rules :after ((process swi) (rules list))
-  (with-prolog-io (process i o e)
-    (assert (string= 'true. (read o)))))
-
-#+(or)
-(defmethod send-query :after ((process prolog-interpreter) query callback)
-  (with-prolog-io (process i o e)
-    ))
-
-(pushnew '(:swi . swi) *interpreter-classes* :test 'equal)
+(defmethod run-prolog ((rules list) (prolog-designator (eql :swi)) &key debug)
+  (with-temp (d :directory t :debug debug)
+    (with-temp (input-file :tmpdir d :template "XXXXXX.pl" :debug debug)
+      (with-open-file (s input-file :direction :output :if-does-not-exist :error)
+        (dolist (r rules)
+          (print-rule s r)))
+      (string-trim '(#\Space #\Newline #\Return)
+                   (uiop:run-program `("swipl" "--quiet" "-l" ,input-file) :output :string)))))

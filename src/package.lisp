@@ -11,14 +11,10 @@
   (:export
    #:<--
    #:prolog-interpreter
-   #:with-prolog-io
-   #:send-rule
-   #:send-rules
-   #:send-query
-   #:terminate
+   #:run-prolog
    #:print-rule
    #:*interpreter-classes*
-   #:with-prolog-process))
+   #:with-temp))
 (in-package :cl-prolog)
 
 ;;; comments
