@@ -8,10 +8,10 @@ exec ros -Q -- $0 "$@"
   (declare (ignorable argv))
   (uiop:quit (if (handler-case
                      (progn
-                       (ql:quickload :cl-prolog.yap.test)
+                       (ql:quickload :cl-prolog.bprolog.test)
                        (eval
                         (read-from-string
-                         "(let ((cl-prolog.test:*interpreter-class* :yap)) (5am:run! :cl-prolog.impl)")))
+                         "(let ((cl-prolog.test:*interpreter-class* :bprolog)) (5am:run! :cl-prolog.impl)")))
                    (serious-condition (c)
                      (describe c)
                      (uiop:quit 2)))

@@ -37,11 +37,13 @@
 
 (defvar *interpreter-class*)
 
+(defvar *debug* t)
+
 (test hello-world
   (is (equal "hello world"
              (run-prolog '((:- main (write "hello world"))
                            (:- (initialization main)))
-                         *interpreter-class*))))
+                         *interpreter-class* :debug *debug*))))
 
 (test symbol-name-test
   (is (equal "'anakin-skywalker'"
@@ -51,7 +53,7 @@
                                (write_canonical ?x)
                                fail)
                            (:- (initialization main)))
-                         *interpreter-class*)))
+                         *interpreter-class* :debug *debug*)))
   (is (equal "'anakin-skywalker'"
              (run-prolog `((parent-of luke-skywalker anakin-skywalker)
                            (:- main
@@ -59,7 +61,7 @@
                                (write_canonical ?who-is-it)
                                fail)
                            (:- (initialization main)))
-                         *interpreter-class*))))
+                         *interpreter-class* :debug *debug*))))
 
 (test factorial
   (is (= 6
@@ -75,7 +77,7 @@
                              (factorial 3 ?w)
                              (write_canonical ?w))
                          (:- (initialization main)))
-                       *interpreter-class*))))))
+                       *interpreter-class* :debug *debug*))))))
 
 (test queens
   ;; https://www.metalevel.at/queens/
@@ -118,4 +120,4 @@
                              (length ?set ?l)
                              (write_canonical ?l))
                          (:- (initialization main)))
-                       *interpreter-class*))))))
+                       *interpreter-class* :debug *debug*))))))
