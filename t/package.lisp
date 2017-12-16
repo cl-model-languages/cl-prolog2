@@ -12,7 +12,8 @@
         :trivia :alexandria)
   (:shadow :terminate)
   (:export
-   #:test-implementation))
+   #:test-implementation
+   #:*interpreter-class*))
 (in-package :cl-prolog.test)
 
 
@@ -34,24 +35,15 @@
 
 (defvar *interpreter-class*)
 
-(defun test-implementation (*interpreter-class*)
-  (run! :cl-prolog.impl))
-
-(defmacro with-impl ((var) &body body)
-  `(let ((,var (make-instance *interpreter-class*)))
-     (unwind-protect
-          (progn ,@body)
-       (cl-prolog:terminate ,var))))
-
 (test hello-world
-  (with-impl (p)
+  (with-prolog-process (p *interpreter-class*)
     (send-query p '(write "hello world\\n")
                 (lambda (output)
                   (is (equal "hello world" (read-line output)))
                   nil))))
 
 (test factorial
-  (with-impl (p)
+  (with-prolog-process (p *interpreter-class*)
     (finishes
       (send-rules p `((factorial 0 1)
                       (:- (factorial ?n ?f)
@@ -76,7 +68,7 @@
 
 (test queens
   ;; https://www.metalevel.at/queens/
-  (with-impl (p)
+  (with-prolog-process (p *interpreter-class*)
     
     (finishes
       (send-rules p `(;; note: this overwrites swi-prolog's builtin

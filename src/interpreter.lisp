@@ -111,3 +111,16 @@
       ;; no more queries
       (write-char #\. i)
       (finish-output i))))
+
+(defparameter *interpreter-classes* nil
+  "An alist of (keyword . class-name).")
+
+(defmacro with-prolog-process ((var &optional (class-form (cdr (first *interpreter-classes*)))) &body body)
+  "Launch a prolog interpreter, run the body and terminate the process."
+  (once-only (class-form)
+    `(let ((,var (if (find-class ,class-form nil)
+                     (make-instance ,class-form)
+                     (make-instance (cdr (assoc ,class-form *interpreter-classes*))))))
+       (unwind-protect
+            (progn ,@body)
+         (terminate ,var)))))
