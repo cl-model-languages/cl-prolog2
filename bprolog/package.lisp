@@ -12,7 +12,7 @@
 
 ;; blah blah blah.
 
-(defmethod run-prolog ((rules list) (prolog-designator (eql :bprolog)) &key debug)
+(defmethod run-prolog ((rules list) (prolog-designator (eql :bprolog)) &key debug args)
   (with-temp (d :directory t :debug debug)
     (with-temp (input-file :tmpdir d :template "XXXXXX.pl" :debug debug)
       (with-open-file (s input-file :direction :output :if-does-not-exist :error)
@@ -21,7 +21,7 @@
         (print-rule s '(:- (initialization halt))))
       ;; remove the banner
       (let* ((out (uiop:run-program `(,(namestring (asdf:system-relative-pathname :cl-prolog.bprolog "BProlog/bp"))
-                                       "-i" ,input-file)
+                                       "-i" ,input-file ,@args)
                                     :output :string))
              (pos (loop with count = 0
                      until (= count 2)
