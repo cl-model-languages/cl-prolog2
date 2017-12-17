@@ -14,7 +14,8 @@
    #:run-prolog
    #:print-rule
    #:*interpreter-classes*
-   #:with-temp))
+   #:with-temp
+   #:*debug-prolog*))
 (in-package :cl-prolog)
 
 ;;; comments

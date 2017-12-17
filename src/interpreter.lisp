@@ -3,7 +3,7 @@
 
 ;;; API.
 
-(defvar *debug-prolog* t
+(defvar *debug-prolog* nil
   "Flag for debugging the input to the prolog interpreter.
  Enables verbose output when something is sent the interpreter.")
 
