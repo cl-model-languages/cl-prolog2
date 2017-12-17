@@ -17,8 +17,7 @@
     (with-temp (input-file :tmpdir d :template "XXXXXX.pl" :debug debug)
       (with-open-file (s input-file :direction :output :if-does-not-exist :error)
         (dolist (r rules)
-          (print-rule s r))
-        (print-rule s '(:- (initialization halt))))
+          (print-rule s r)))
       ;; remove the banner
       (let* ((out (uiop:run-program `(,(namestring (asdf:system-relative-pathname :cl-prolog.bprolog "BProlog/bp"))
                                        "-i" ,input-file ,@args)
