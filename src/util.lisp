@@ -39,3 +39,33 @@ Facts (rules without conditions) are given precedence to the standard rules."
                ((string= name1 name2)
                 (< (length args1) (length args2)))
                ((string> name1 name2) nil)))))))
+
+(defun print-sexp ()
+  "This function returns a cl-prolog program for a prolog rule print-sexp/1,
+which prints a prolog term in a SEXP form.
+
+print-sexp prints atoms/numbers as atoms/numbers, a term as a list, and a list as a list."
+  `((:- (print-sexp ?term)
+        (atomic ?term)
+        (write ?term)
+        !)
+    
+    (:- (print-sexp (list))
+        (write "()")
+        !)
+    (:- (print-sexp (list* ?car ?cdr))
+        (write "(")
+        (print-sexp ?car)
+        (print-sexp-list-aux ?cdr)
+        (write ")")
+        !)
+    
+    (:- (print-sexp ?term)
+        (=.. ?term ?l)
+        (print-sexp ?l))
+        
+    (print-sexp-list-aux (list))
+    (:- (print-sexp-list-aux (list* ?car ?cdr))
+        (write " ")
+        (print-sexp ?car)
+        (print-sexp-list-aux ?cdr))))

@@ -62,6 +62,12 @@ note that **all non-alphanumeric characters are converted to underscores**.
     Useful for avoiding noncontiguous-clauses errors (rules for the same clauses are not written together).
     Facts (rules without conditions) are given precedence to the standard rules.
 
+    print-term-sexp ()
+    
+    This function returns a cl-prolog program for a prolog rule print-term-sexp,
+    which prints a prolog term in a SEXP form,
+    i.e. achieving a goal (print-term-sexp ?term) prints ?term in SEXP.
+
 ## Dependencies
 This library is at least tested on implementation listed below:
 
