@@ -58,7 +58,7 @@ note that **all non-alphanumeric characters are converted to underscores**.
 
     sort-clauses (rules)
 
-    Sort the rules by dictionary ordering.
+    Destructively sort the rules by dictionary ordering.
     Useful for avoiding noncontiguous-clauses errors (rules for the same clauses are not written together).
     Facts (rules without conditions) are given precedence to the standard rules.
 
