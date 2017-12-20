@@ -30,7 +30,24 @@
   (finishes (print-rule *standard-output* '(:-(a b c) (a _b c) (a b c))))
   (finishes (print-rule *standard-output* '(a b c)))
   (finishes (print-rule *standard-output* '(member ?x (list* ?x _))))
-  (finishes (print-rule *standard-output* '(:- (member ?x (list* _ ?r)) (member ?x ?r)))))
+  (finishes (print-rule *standard-output* '(:- (member ?x (list* _ ?r)) (member ?x ?r))))
+
+  (is (equalp
+       '((a b)
+         (a b c)
+         (:- (a b c))
+         (x y)
+         (x y z)
+         (:- (x y z)))
+       (sort-clauses
+        (shuffle
+         (copy-list
+          '((a b)
+            (a b c)
+            (:- (a b c))
+            (x y)
+            (x y z)
+            (:- (x y z)))))))))
 
 (def-suite :cl-prolog.impl)
 (in-suite :cl-prolog.impl)
