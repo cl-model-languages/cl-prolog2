@@ -54,6 +54,14 @@ The function returns the output of the process as a string.
 Variables are given to the Prolog interpreter as underscored symbols, and
 note that **all non-alphanumeric characters are converted to underscores**.
 
+## Utility
+
+    sort-clauses (rules)
+
+    Sort the rules by dictionary ordering.
+    Useful for avoiding noncontiguous-clauses errors (rules for the same clauses are not written together).
+    Facts (rules without conditions) are given precedence to the standard rules.
+
 ## Dependencies
 This library is at least tested on implementation listed below:
 

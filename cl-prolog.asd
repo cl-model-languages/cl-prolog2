@@ -16,9 +16,11 @@
               :external-program
               :trivial-garbage)
  :pathname "src"
+ :serial t
  :components ((:file "package")
               (:file "compiler-macro")
               (:file "printers")
-              (:file "interpreter"))
+              (:file "interpreter")
+              (:file "util"))
  :description "Common Interface to the ISO prolog implementations from Common Lisp"
  :in-order-to ((test-op (test-op :cl-prolog.test))))
