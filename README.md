@@ -35,7 +35,7 @@ such as `:swi` or `:yap`.
 The function returns the output of the process as a string.
 
 **We don't provide a parser for Prolog output** and, therefore,
-**formatting the output should be done on behalf of Prolog program** or you should **write a parser from lisp**.
+**formatting the output should be done by Prolog** or you should **write a parser from lisp**.
 
 ## Query format
 
