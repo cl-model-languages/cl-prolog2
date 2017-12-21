@@ -66,6 +66,11 @@ print-sexp prints atoms/numbers as atoms/numbers, a term as a list, and a list a
         
     (print-sexp-list-aux (list))
     (:- (print-sexp-list-aux (list* ?car ?cdr))
+        (atomic ?car) !
         (write " ")
+        (print-sexp ?car)
+        (print-sexp-list-aux ?cdr))
+    (:- (print-sexp-list-aux (list* ?car ?cdr))
+        (write " \\n")
         (print-sexp ?car)
         (print-sexp-list-aux ?cdr))))
