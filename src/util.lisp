@@ -45,13 +45,12 @@ Facts (rules without conditions) are given precedence to the standard rules."
 which prints a prolog term in a SEXP form.
 
 print-sexp prints atoms/numbers as atoms/numbers, a term as a list, and a list as a list."
-  `((:- (print-sexp ?term)
+  `((:- (print-sexp (list))
+        (write "()")
+        !)
+    (:- (print-sexp ?term)
         (atomic ?term)
         (write ?term)
-        !)
-    
-    (:- (print-sexp (list))
-        (write "()")
         !)
     (:- (print-sexp (list* ?car ?cdr))
         (write "(")
