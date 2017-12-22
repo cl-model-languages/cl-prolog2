@@ -13,7 +13,7 @@
            (uiop:symbol-call :trivial-package-manager
                              :ensure-program
                              "swipl"
-                             :apt "swi-prolog"
+                             :apt "swi-prolog/stable/swi-prolog"
                              :yum "pl"
                              :dnf "pl"
                              :pacman "swi-prolog"
