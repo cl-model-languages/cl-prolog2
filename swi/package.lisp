@@ -12,7 +12,7 @@
 
 ;; blah blah blah.
 
-(defmethod run-prolog ((rules list) (prolog-designator (eql :swi)) &key debug args)
+(defmethod run-prolog ((rules list) (prolog-designator (eql :swi)) &key debug args &allow-other-keys)
   (with-temp (d :directory t :debug debug)
     (with-temp (input-file :tmpdir d :template "XXXXXX.prolog" :debug debug)
       (with-open-file (s input-file :direction :output :if-does-not-exist :error)

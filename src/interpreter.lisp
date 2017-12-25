@@ -12,7 +12,7 @@
     (format t "~&; ~/cl-prolog::%print-rule/" rule))
   (%print-rule stream rule nil nil))
 
-(defgeneric run-prolog (input prolog-designator &key debug args))
+(defgeneric run-prolog (input prolog-designator &key debug args &allow-other-keys))
 
 (defmacro with-temp ((var &key directory template (tmpdir "/tmp/") debug) &body body)
   "Create a temporary file, then remove the file by unwind-protect.
