@@ -28,12 +28,17 @@ They rather implemented a Prolog system by itself, i.e., [programming OR approac
 The ASDF system `cl-prolog` does not provide implementations, but merely the API to those implementations.
 The sub-libraries of `cl-prolog` are in the corresponding sub-directories.
 
-They should implement a method `(run-prolog rules prolog-designator)`, where `prolog-designator` is a keyword symbol
-such as `:swi` or `:yap`.
+They should implement a method `(run-prolog rules prolog-designator &key debug args &allow-other-keys)`,
+where `prolog-designator` is a keyword symbol such as `:swi` or `:yap`.
 The function returns the output of the process as a string.
+
+* `:debug` --- when non-nil, print the prolog output to the standard output.
+* `:args` --- provides additional command line argument to the prolog
+  interpreter. For example, `:args '("-g" "main")` for swi-prolog says that the top-level goal is `main`.
 
 **We don't provide a parser for Prolog output** and, therefore,
 **formatting the output should be done by Prolog** or you should **write a parser from lisp**.
+Also, consider using `print-term-sexp` below. 
 
 ## Query format
 
@@ -59,7 +64,7 @@ Care must be taken when two variables ends up in the same name, e.g. both `?a-b-
 
 Symbol `_` and `?` are both converted to symbol `_`, a wildcard symbol.
 
-## Utility
+## Utility Functions
 
     sort-clauses (rules)
 
