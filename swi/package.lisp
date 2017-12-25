@@ -19,5 +19,7 @@
         (let ((*debug-prolog* debug))
           (dolist (r rules)
             (print-rule s r))))
+      (when debug
+        (format t "; ~{~a~^ ~}" `("swipl" "--quiet" "-l" ,input-file ,@args)))
       (string-trim '(#\Space #\Newline #\Return)
                    (uiop:run-program `("swipl" "--quiet" "-l" ,input-file ,@args) :output :string)))))

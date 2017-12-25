@@ -20,6 +20,9 @@
           (dolist (r rules)
             (print-rule s r))))
       ;; remove the banner
+      (when debug
+        (format t "; ~{~a~^ ~}" `(,(namestring (asdf:system-relative-pathname :cl-prolog.bprolog "BProlog/bp"))
+                                   "-i" ,input-file ,@args)))
       (let* ((out (uiop:run-program `(,(namestring (asdf:system-relative-pathname :cl-prolog.bprolog "BProlog/bp"))
                                        "-i" ,input-file ,@args)
                                     :output :string))

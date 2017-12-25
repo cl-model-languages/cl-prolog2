@@ -20,5 +20,7 @@
           (print-rule s '(:- (set_prolog_flag unknown error)))
           (dolist (r rules)
             (print-rule s r))))
+      (when debug
+        (format t "; ~{~a~^ ~}" `("yap" "-l" ,input-file ,@args)))
       (uiop:run-program `("yap" "-l" ,input-file ,@args) :output '(:string :stripped t)))))
 
