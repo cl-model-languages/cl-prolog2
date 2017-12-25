@@ -17,11 +17,13 @@ is not defined in the ISO standard, and it is hard to maintain the compatibility
 
 It looks like https://github.com/keithj/cl-prolog has a similar idea in mind.
 However, it is based on a FFI binding written for each interpreter,
-thus it does not scale to larger number of prolog systems.
+thus it does not scale to a larger number of prolog systems.
 
 There are already many lisp-to-prolog libraries, including the one mentioned above, but
 also Allegro Prolog, PAIP prolog and the Prolog in On Lisp are the famous ones.
 They rather implemented a Prolog system by itself, i.e., [programming OR approach](https://kuomarc.wordpress.com/2012/03/05/the-uncommon-lisp-approach-to-operations-research/).
+Although these are different approaches,
+it is quite possible to support those systems from cl-prolog.
 
 ## API
 
