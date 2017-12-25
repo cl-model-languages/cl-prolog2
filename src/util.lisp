@@ -8,6 +8,8 @@
 (defun sort-clauses (rules)
   "Destructively sort the rules by dictionary ordering.
 Useful for avoiding noncontiguous-clauses errors (rules for the same clauses are not written together).
+However, since it alters the ordering of the rules and Prolog checks the rules from top-to-bottom,
+it may corrupt the program especially when cut operator (!) is involved.
 Facts (rules without conditions) are given precedence to the standard rules."
   (sort rules
         (lambda (a b)
