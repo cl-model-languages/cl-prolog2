@@ -15,11 +15,9 @@ is not defined in the ISO standard, and it is hard to maintain the compatibility
 
 ## Related work
 
-It looks like https://github.com/keithj/cl-prolog has similar things in mind, and
-it has more careful considerations regarding which names are accepted by the Prolog language spec.
-However, I don't do such a complicated thing; if it works it's fine.
-Be just careful whichever character you use for your symbols.
-Also, it seems to have painfully gone through the FFI binding. I definitely won't do the same.
+It looks like https://github.com/keithj/cl-prolog has a similar idea in mind.
+However, it is based on a FFI binding written for each interpreter,
+thus it does not scale to larger number of prolog systems.
 
 There are already many lisp-to-prolog libraries, including the one mentioned above, but
 also Allegro Prolog, PAIP prolog and the Prolog in On Lisp are the famous ones.
@@ -51,8 +49,15 @@ The function returns the output of the process as a string.
     
     builtins : ('list term*) | ('list* term*) | ('not term) | ('or term*) | ('and term*)
     
+Predicates and atoms are wrapped in single quotes.
+
 Variables are given to the Prolog interpreter as underscored symbols, and
 note that **all non-alphanumeric characters are converted to underscores**.
+This is more than enough for most use cases because variables are converted to gensyms by the prolog interpreter anyways,
+and we cannot expect the variable names are maintained.
+Care must be taken when two variables ends up in the same name, e.g. both `?a-b-c` and `?a_b_c` ends up in `_a_b_c`.
+
+Symbol `_` and `?` are both converted to symbol `_`, a wildcard symbol.
 
 ## Utility
 
