@@ -13,6 +13,8 @@ Choose the one with the *best performance for your application*.
 **News** We changed the implementation to use the batch-mode only, since the behavior of Prolog top-level loop
 is not defined in the ISO standard, and it is hard to maintain the compatibility between different interpreters.
 
+For a practical guide to write a fast, efficient prolog, [this page](https://www.metalevel.at/prolog/efficiency) might help.
+
 ## Related work
 
 It looks like https://github.com/keithj/cl-prolog has a similar idea in mind.
