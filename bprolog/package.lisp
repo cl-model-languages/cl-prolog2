@@ -23,9 +23,11 @@
       (when debug
         (format t "; ~{~a~^ ~}" `(,(namestring (asdf:system-relative-pathname :cl-prolog.bprolog "BProlog/bp"))
                                    "-i" ,input-file ,@args)))
-      (let* ((out (uiop:run-program `(,(namestring (asdf:system-relative-pathname :cl-prolog.bprolog "BProlog/bp"))
-                                       "-i" ,input-file ,@args)
-                                    :output :string))
+      (let* ((out (alexandria:unwind-protect-case ()
+                      (uiop:run-program `(,(namestring (asdf:system-relative-pathname :cl-prolog.bprolog "BProlog/bp"))
+                                           "-i" ,input-file ,@args)
+                                        :output :string)
+                    (:abort (setf debug t))))
              (pos (loop with count = 0
                      until (= count 2)
                      for i from 0

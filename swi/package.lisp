@@ -22,4 +22,6 @@
       (when debug
         (format t "; ~{~a~^ ~}" `("swipl" "--quiet" "-l" ,input-file ,@args)))
       (string-trim '(#\Space #\Newline #\Return)
-                   (uiop:run-program `("swipl" "--quiet" "-l" ,input-file ,@args) :output :string)))))
+                   (alexandria:unwind-protect-case ()
+                       (uiop:run-program `("swipl" "--quiet" "-l" ,input-file ,@args) :output :string)
+                     (:abort (setf debug t)))))))

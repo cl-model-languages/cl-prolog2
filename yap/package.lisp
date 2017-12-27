@@ -22,5 +22,7 @@
             (print-rule s r))))
       (when debug
         (format t "; ~{~a~^ ~}" `("yap" "-l" ,input-file ,@args)))
-      (uiop:run-program `("yap" "-l" ,input-file ,@args) :output '(:string :stripped t)))))
+      (alexandria:unwind-protect-case ()
+          (uiop:run-program `("yap" "-l" ,input-file ,@args) :output '(:string :stripped t))
+        (:abort (setf debug t))))))
 
