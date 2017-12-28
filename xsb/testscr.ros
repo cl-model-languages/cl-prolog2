@@ -1,0 +1,18 @@
+#!/bin/sh
+#|-*- mode:lisp -*-|#
+#|
+exec ros -Q -- $0 "$@"
+|#
+
+(defun main (&rest argv)
+  (declare (ignorable argv))
+  (uiop:quit (if (handler-case
+                     (progn
+                       (ql:quickload :cl-prolog2.xsb.test)
+                       (eval
+                        (read-from-string
+                         "(let ((cl-prolog2.test:*interpreter-class* :xsb)) (5am:run! :cl-prolog2.impl)")))
+                   (serious-condition (c)
+                     (describe c)
+                     (uiop:quit 2)))
+                 0 1)))
