@@ -27,6 +27,16 @@ They rather implemented a Prolog system by itself, i.e., [programming OR approac
 Although these are different approaches,
 it is quite possible to support those systems from cl-prolog2.
 
+## Supported implementations
+
+* SWI-prolog, the most actively developed prolog system.
+* YAP, another well-maintained prolog system.
+* XSB, famous for introducing tabling semantics.
+* B-Prolog, a commercial implementation by Afany Software, which is free-to-use
+  for academic purpose. Claiming to be fast, but the
+  [benchmark](http://www.picat-lang.org/bprolog/performance.htm) was taken many
+  years ago.
+
 ## API
 
 The ASDF system `cl-prolog2` does not provide implementations, but merely the API to those implementations.
