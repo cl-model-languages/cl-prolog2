@@ -58,25 +58,25 @@
 
 (test hello-world
   (is (equal "hello world"
-             (run-prolog '((:- main (write "hello world"))
+             (run-prolog '((:- main (write "hello world") halt)
                            (:- (initialization main)))
                          *interpreter-class* :debug *debug*))))
 
 (test symbol-name-test
-  (is (equal "'anakin-skywalker'"
+  (is (equal "anakin-skywalker"
              (run-prolog `((parent-of luke-skywalker anakin-skywalker)
                            (:- main
                                (parent-of luke-skywalker ?x)
-                               (write_canonical ?x)
-                               fail)
+                               (write ?x)
+                               halt)
                            (:- (initialization main)))
                          *interpreter-class* :debug *debug*)))
-  (is (equal "'anakin-skywalker'"
+  (is (equal "anakin-skywalker"
              (run-prolog `((parent-of luke-skywalker anakin-skywalker)
                            (:- main
                                (parent-of luke-skywalker ?who-is-it)
-                               (write_canonical ?who-is-it)
-                               fail)
+                               (write ?who-is-it)
+                               halt)
                            (:- (initialization main)))
                          *interpreter-class* :debug *debug*))))
 
@@ -92,7 +92,8 @@
                                   (is ?f (* ?n ?f1))))
                          (:- main
                              (factorial 3 ?w)
-                             (write_canonical ?w))
+                             (write ?w)
+                             halt)
                          (:- (initialization main)))
                        *interpreter-class* :debug *debug*))))))
 
@@ -102,10 +103,15 @@
          (read-from-string
           (print
            (run-prolog `(;; note: this overwrites swi-prolog's builtin
-                         ,@(when (eq *interpreter-class* :yap)
+                         ,@(when (member *interpreter-class* '(:yap :xsb))
                              `((member ?x (list* ?x ?rest))
                                (:- (member ?x (list* ?y ?rest))
                                    (member ?x ?rest))))
+                         ,@(when (member *interpreter-class* '(:xsb))
+                             `((length (list) 0)
+                               (:- (length (list* _ ?rest) ?l)
+                                   (length ?rest ?l1)
+                                   (is ?l (+ ?l1 1)))))
                          ;; perm
                          (:- (perm (list* ?x ?y) ?z)
                              (perm ?y ?w)
@@ -136,6 +142,7 @@
                          (:- main
                              (setof ?p (solve ?p) ?set)
                              (length ?set ?l)
-                             (write_canonical ?l))
+                             (write ?l)
+                             halt)
                          (:- (initialization main)))
                        *interpreter-class* :debug *debug*))))))
