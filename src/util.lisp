@@ -1,7 +1,7 @@
 
 
 
-(in-package :cl-prolog)
+(in-package :cl-prolog2)
 
 (named-readtables:in-readtable :fare-quasiquote)
 
@@ -44,7 +44,7 @@ it may corrupt the program especially when cut operator (!) is involved."
                ((string> name1 name2) nil)))))))
 
 (defun print-sexp (&key swi)
-  "This function returns a cl-prolog program for a prolog rule print-sexp/1,
+  "This function returns a cl-prolog2 program for a prolog rule print-sexp/1,
 which prints a prolog term in a SEXP form.
 
 print-sexp prints atoms/numbers as atoms/numbers, a term as a list, and a list as a list.

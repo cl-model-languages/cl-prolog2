@@ -1,5 +1,5 @@
 
-# Cl-Prolog - Common Interface to the ISO Prolog implementations from Common Lisp
+# Cl-Prolog2 - Common Interface to the ISO Prolog implementations from Common Lisp
 
 This is a realization of Marc Kuo's ["modelling approach to OR (operations research)"](https://kuomarc.wordpress.com/2012/03/05/the-uncommon-lisp-approach-to-operations-research/)
 for Prolog language.
@@ -25,12 +25,12 @@ There are already many lisp-to-prolog libraries, including the one mentioned abo
 also Allegro Prolog, PAIP prolog and the Prolog in On Lisp are the famous ones.
 They rather implemented a Prolog system by itself, i.e., [programming OR approach](https://kuomarc.wordpress.com/2012/03/05/the-uncommon-lisp-approach-to-operations-research/).
 Although these are different approaches,
-it is quite possible to support those systems from cl-prolog.
+it is quite possible to support those systems from cl-prolog2.
 
 ## API
 
-The ASDF system `cl-prolog` does not provide implementations, but merely the API to those implementations.
-The sub-libraries of `cl-prolog` are in the corresponding sub-directories.
+The ASDF system `cl-prolog2` does not provide implementations, but merely the API to those implementations.
+The sub-libraries of `cl-prolog2` are in the corresponding sub-directories.
 
 They should implement a method `(run-prolog rules prolog-designator &key debug args &allow-other-keys)`,
 where `prolog-designator` is a keyword symbol such as `:swi` or `:yap`.
@@ -81,7 +81,7 @@ Symbol `_` and `?` are both converted to symbol `_`, a wildcard symbol.
 
     print-term-sexp ()
     
-    This function returns a cl-prolog program for a prolog rule print-term-sexp,
+    This function returns a cl-prolog2 program for a prolog rule print-term-sexp,
     which prints a prolog term in a SEXP form,
     i.e. achieving a goal (print-term-sexp ?term) prints ?term in SEXP.
 

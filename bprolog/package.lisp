@@ -1,14 +1,14 @@
 #|
-  This file is a part of cl-prolog.yap project.
+  This file is a part of cl-prolog2.yap project.
   Copyright (c) 2017 Masataro Asai (guicho2.71828@gmail.com)
 |#
 
 (in-package :cl-user)
-(defpackage cl-prolog.bprolog
-  (:use :cl :cl-prolog)
+(defpackage cl-prolog2.bprolog
+  (:use :cl :cl-prolog2)
   (:export
    #:bprolog))
-(in-package :cl-prolog.bprolog)
+(in-package :cl-prolog2.bprolog)
 
 ;; blah blah blah.
 
@@ -21,10 +21,10 @@
             (print-rule s r))))
       ;; remove the banner
       (when debug
-        (format t "; ~{~a~^ ~}" `(,(namestring (asdf:system-relative-pathname :cl-prolog.bprolog "BProlog/bp"))
+        (format t "; ~{~a~^ ~}" `(,(namestring (asdf:system-relative-pathname :cl-prolog2.bprolog "BProlog/bp"))
                                    "-i" ,input-file ,@args)))
       (let* ((out (alexandria:unwind-protect-case ()
-                      (uiop:run-program `(,(namestring (asdf:system-relative-pathname :cl-prolog.bprolog "BProlog/bp"))
+                      (uiop:run-program `(,(namestring (asdf:system-relative-pathname :cl-prolog2.bprolog "BProlog/bp"))
                                            "-i" ,input-file ,@args)
                                         :output :string)
                     (:abort (setf debug t))))

@@ -1,12 +1,12 @@
 #|
-  This file is a part of cl-prolog project.
+  This file is a part of cl-prolog2 project.
   Copyright (c) 2017 Masataro Asai (guicho2.71828@gmail.com)
 |#
 
 (in-package :cl-user)
-(defpackage :cl-prolog.test
+(defpackage :cl-prolog2.test
   (:use :cl
-        :cl-prolog
+        :cl-prolog2
         :fiveam
         :iterate
         :trivia :alexandria)
@@ -14,16 +14,16 @@
   (:export
    #:test-implementation
    #:*interpreter-class*))
-(in-package :cl-prolog.test)
+(in-package :cl-prolog2.test)
 
 
 
-(def-suite :cl-prolog)
-(in-suite :cl-prolog)
+(def-suite :cl-prolog2)
+(in-suite :cl-prolog2)
 
 ;; run test with (run! test-name) 
 
-(test cl-prolog
+(test cl-prolog2
   (finishes (print-rule *standard-output* 'atom))
   (finishes (print-rule *standard-output* 'atom-with-hyphen))
   (finishes (print-rule *standard-output* '(:- (a b c) (a ?b c) (a b c))))
@@ -49,8 +49,8 @@
             (x y z)
             (:- (x y z)))))))))
 
-(def-suite :cl-prolog.impl)
-(in-suite :cl-prolog.impl)
+(def-suite :cl-prolog2.impl)
+(in-suite :cl-prolog2.impl)
 
 (defvar *interpreter-class*)
 

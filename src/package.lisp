@@ -1,12 +1,12 @@
 #|
-  This file is a part of cl-prolog project.
+  This file is a part of cl-prolog2 project.
   Copyright (c) 2017 Masataro Asai (guicho2.71828@gmail.com)
 |#
 
 ;;; package
 
 (in-package :cl-user)
-(defpackage cl-prolog
+(defpackage cl-prolog2
   (:use :cl :trivia :alexandria)
   (:export
    #:<--
@@ -18,7 +18,7 @@
    #:*debug-prolog*
    #:sort-clauses
    #:print-sexp))
-(in-package :cl-prolog)
+(in-package :cl-prolog2)
 
 ;;; comments
 

@@ -1,5 +1,5 @@
 
-(in-package :cl-prolog)
+(in-package :cl-prolog2)
 
 ;;; API.
 
@@ -9,7 +9,7 @@
 
 (defun print-rule (stream rule)
   (when *debug-prolog*
-    (format t "~&; ~/cl-prolog::%print-rule/" rule))
+    (format t "~&; ~/cl-prolog2::%print-rule/" rule))
   (%print-rule stream rule nil nil))
 
 (defgeneric run-prolog (input prolog-designator &key debug args &allow-other-keys))

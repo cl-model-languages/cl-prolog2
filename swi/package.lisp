@@ -1,14 +1,14 @@
 #|
-  This file is a part of cl-prolog.swi project.
+  This file is a part of cl-prolog2.swi project.
   Copyright (c) 2017 Masataro Asai (guicho2.71828@gmail.com)
 |#
 
 (in-package :cl-user)
-(defpackage cl-prolog.swi
-  (:use :cl :cl-prolog)
+(defpackage cl-prolog2.swi
+  (:use :cl :cl-prolog2)
   (:export
    #:swi-prolog))
-(in-package :cl-prolog.swi)
+(in-package :cl-prolog2.swi)
 
 ;; blah blah blah.
 

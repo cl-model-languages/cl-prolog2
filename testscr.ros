@@ -10,10 +10,10 @@ exec ros -Q -- $0 "$@"
   (declare (ignorable argv))
   (uiop:quit (if (handler-case
                      (progn
-                       (asdf:load-system :cl-prolog.test)
+                       (asdf:load-system :cl-prolog2.test)
                        (eval
  (read-from-string
-  "(5am:run! :cl-prolog)"))
+  "(5am:run! :cl-prolog2)"))
 )
                    (serious-condition (c)
                      (describe c)

@@ -1,14 +1,14 @@
 #|
-  This file is a part of cl-prolog.yap project.
+  This file is a part of cl-prolog2.yap project.
   Copyright (c) 2017 Masataro Asai (guicho2.71828@gmail.com)
 |#
 
 (in-package :cl-user)
-(defpackage cl-prolog.yap
-  (:use :cl :cl-prolog)
+(defpackage cl-prolog2.yap
+  (:use :cl :cl-prolog2)
   (:export
    #:yap))
-(in-package :cl-prolog.yap)
+(in-package :cl-prolog2.yap)
 
 ;; blah blah blah.
 

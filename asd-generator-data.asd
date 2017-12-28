@@ -1,5 +1,5 @@
 #|
-  This file is a part of cl-prolog project.
+  This file is a part of cl-prolog2 project.
 
 This is a [asd-generator](https://github.com/phoe/asd-generator/) config file.
 Run below for auto-regenerating the asd file:

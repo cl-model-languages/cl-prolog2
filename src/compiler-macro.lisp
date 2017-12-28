@@ -1,5 +1,5 @@
 
-(in-package :cl-prolog)
+(in-package :cl-prolog2)
 
 (named-readtables:in-readtable :fare-quasiquote)
 
