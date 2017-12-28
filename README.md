@@ -29,13 +29,18 @@ it is quite possible to support those systems from cl-prolog2.
 
 ## Supported implementations
 
-* SWI-prolog, the most actively developed prolog system.
-* YAP, another well-maintained prolog system.
-* XSB, famous for introducing tabling semantics.
-* B-Prolog, a commercial implementation by Afany Software, which is free-to-use
+* [SWI-prolog](http://swi-prolog.org/), the most actively developed prolog system.
+* [YAP](https://www.dcc.fc.up.pt/~vsc/Yap/), another well-maintained prolog system.
+* [XSB](http://xsb.sourceforge.net/), famous for introducing tabling semantics.
+* [B-Prolog](http://www.picat-lang.org/bprolog), a commercial implementation by Afany Software, which is free-to-use
   for academic purpose. Claiming to be fast, but the
   [benchmark](http://www.picat-lang.org/bprolog/performance.htm) was taken many
   years ago.
+
+Recently, many prolog systems contain an interface to constraint/linear programming solvers.
+Also, with tabling semantics (basically a form of automated memoization), certain programs
+runs faster and can be conveniently written without much consideration on the termination.
+I believe there is a good motivation to reevaluate Prolog as a good "middleware language" for expressing and solving complex problems.
 
 ## API
 
