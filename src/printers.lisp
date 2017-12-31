@@ -55,7 +55,7 @@
     (`(list* ,@elements)
       (format stream "[~/cl-prolog2::print-commas/|~/cl-prolog2::print-term/]" (butlast elements) (lastcar elements)))
     (`(not ,term)
-      (format stream "\\+ ~/cl-prolog2::print-term/" term))
+      (format stream "\\+(~/cl-prolog2::print-term/)" term))
     (`(and ,@terms)
       (format stream "(~/cl-prolog2::print-commas/)" terms))
     (`(or ,@terms)
