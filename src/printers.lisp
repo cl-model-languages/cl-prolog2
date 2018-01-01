@@ -44,7 +44,14 @@
                   (write-char #\_ stream)))))
     ((symbol name)
      (write-char #\' stream)
-     (write-string (string-downcase name) stream)
+     ;; escape a backslash
+     (loop
+        for c across name
+        do
+          (if (char= #\\ c)
+              (progn (write-char #\\ stream)
+                     (write-char #\\ stream))
+              (write-char (char-downcase c) stream)))
      (write-char #\' stream))
     ((string*)
      (format stream "'~a'" term))
