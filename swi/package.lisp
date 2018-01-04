@@ -19,9 +19,12 @@
         (let ((*debug-prolog* debug))
           (dolist (r rules)
             (print-rule s r))))
-      (when debug
-        (format t "; ~{~a~^ ~}" `("swipl" "--quiet" "-l" ,input-file ,@args)))
-      (string-trim '(#\Space #\Newline #\Return)
-                   (alexandria:unwind-protect-case ()
-                       (uiop:run-program `("swipl" "--quiet" "-l" ,input-file ,@args) :output :string)
-                     (:abort (setf debug t)))))))
+      (let ((command `("swipl" "--quiet" "-l" ,input-file ,@args)))
+        (when debug
+          (format t "; ~{~a~^ ~}" command))
+        (string-trim '(#\Space #\Newline #\Return)
+                     (alexandria:unwind-protect-case ()
+                         (uiop:run-program command :output :string)
+                       (:abort 
+                        (format t "~&; command was: ~{~a~^ ~}" command)
+                        (setf debug t))))))))
