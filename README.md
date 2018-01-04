@@ -35,12 +35,15 @@ it is quite possible to support those systems from cl-prolog2.
 * [B-Prolog](http://www.picat-lang.org/bprolog), a commercial implementation by Afany Software, which is free-to-use
   for academic purpose. Claiming to be fast, but the
   [benchmark](http://www.picat-lang.org/bprolog/performance.htm) was taken many
-  years ago.
+  years ago. 
 
 Recently, many prolog systems contain an interface to constraint/linear programming solvers.
 Also, with tabling semantics (basically a form of automated memoization), certain programs
 runs faster and can be conveniently written without much consideration on the termination.
 I believe there is a good motivation to reevaluate Prolog as a good "middleware language" for expressing and solving complex problems.
+
+Tabling (also known as SLG resolution or Well Founded Semantics) is supported by
+all implementations above, but with various range of feature support. See the later section for difference.
 
 ## API
 
@@ -99,6 +102,33 @@ Symbol `_` and `?` are both converted to symbol `_`, a wildcard symbol.
     This function returns a cl-prolog2 program for a prolog rule print-term-sexp,
     which prints a prolog term in a SEXP form,
     i.e. achieving a goal (print-term-sexp ?term) prints ?term in SEXP.
+
+## To what extent prolog systems are compatible to each other?
+
+No implementations are complete. Each system has its own problem. Below we list some minor/major incompatibility and advantage/disadvantage that I encountered:
+
+* SWI:
+  * The version which comes from the package manager is usually not compiled with tabling support.
+    On ubuntu/debian, cl-prolog2 pulls from [the official PPA repository](https://launchpad.net/~swi-prolog) which support it.
+  * Tabling works, but [the speed is not optimized compared to other systems](http://www.swi-prolog.org/pldoc/man?section=tabling#sec:A.35.1.2).
+  * Tabling seems to have a problem when combined with `findall/3`, spewing "No permission to append findall-bag `0' (continuation in findall/3 generator?)".
+  * Mode-directed tabling compatible to YAP, XSB, B-Prolog is supported. The support is rather a superset of these.
+* YAP:
+  * The version which comes from the package manager is usually not compiled with tabling support.
+  * We provide a `Makefile` in `yap/` subdirectory. This `Makefile` clones from the official repository, compiles it with tabling support and make it recognized by cl-prolog2.
+  * When built from the source, you can also enable a parallelism optimization.
+  * Somewhat maintained.
+  * Libraries are compatible with SWI-prolog.
+* XSB:
+  * Development seems to be frozen.
+  * Spews warning at various places.
+  * Many useful non-ISO library functions in SWI are missing. (min_list, max_list etc)
+* B-Prolog:
+  * Development seems to be frozen.
+  * It writes the error/warning message to the standard output, rather than the standard error. This is very inconvenient.
+  * It does not support more than 32 tabled predicates in a single clause.
+  * `(:- initialization main)` does not prevent printing the banner. You have to specify the command line argument by `:args '("-g" "main")` instead.
+  * Many useful non-ISO library functions in SWI are missing. (min_list, max_list etc)
 
 ## Dependencies
 This library is at least tested on implementation listed below:
