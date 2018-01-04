@@ -13,6 +13,8 @@ Choose the one with the *best performance for your application*.
 **News** We changed the implementation to use the batch-mode only, since the behavior of Prolog top-level loop
 is not defined in the ISO standard, and it is hard to maintain the compatibility between different interpreters.
 
+**News** Added support for XSB and GNU Prolog.
+
 For a practical guide to write a fast, efficient prolog, [this page](https://www.metalevel.at/prolog/efficiency) might help.
 
 ## Related work
@@ -36,6 +38,8 @@ it is quite possible to support those systems from cl-prolog2.
   for academic purpose. Claiming to be fast, but the
   [benchmark](http://www.picat-lang.org/bprolog/performance.htm) was taken many
   years ago. 
+* [GNU Prolog](http://www.gprolog.org/) is a prolog compiler that compiles
+  Prolog to a native assembly and generates a standalone executable.
 
 Recently, many prolog systems contain an interface to constraint/linear programming solvers.
 Also, with tabling semantics (basically a form of automated memoization), certain programs
@@ -127,7 +131,14 @@ No implementations are complete. Each system has its own problem. Below we list 
   * Development seems to be frozen.
   * It writes the error/warning message to the standard output, rather than the standard error. This is very inconvenient.
   * It does not support more than 32 tabled predicates in a single clause.
-  * `(:- initialization main)` does not prevent printing the banner. You have to specify the command line argument by `:args '("-g" "main")` instead.
+  * `(:- initialization main)` does not prevent printing the banner. CL-PROLOG2 skips reading this banner and returns a substring, but this method may be fragile.
+  * Many useful non-ISO library functions in SWI are missing. (min_list, max_list etc)
+* GNU Prolog:
+  * The `gprolog` interpreter that comes with GNU-prolog is almost broken, as far as I tested it.
+    Thus we disabled the interpreter mode, and use native-compiler `gplc` only.
+  * `gprolog` does not seem to recognize the predicates defined in the same file.
+  * `gprolog` spews lots of messages when consulting a file.
+  * `gprolog` does not suppress banner with `(:- initialization main)`.
   * Many useful non-ISO library functions in SWI are missing. (min_list, max_list etc)
 
 ## Dependencies
