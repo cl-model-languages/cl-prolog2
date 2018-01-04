@@ -4,15 +4,12 @@
 exec ros -Q -- $0 "$@"
 |#
 
+#+sbcl (sb-ext:enable-debugger)
 (defun main (&rest argv)
   (declare (ignorable argv))
-  (uiop:quit (if (handler-case
-                     (progn
-                       (ql:quickload :cl-prolog2.swi.test)
-                       (eval
-                        (read-from-string
-                         "(let ((cl-prolog2.test:*interpreter-class* :swi)) (5am:run! :cl-prolog2.impl)")))
-                   (serious-condition (c)
-                     (describe c)
-                     (uiop:quit 2)))
+  (uiop:quit (if (progn
+                   (ql:quickload :cl-prolog2.swi.test)
+                   (eval
+                    (read-from-string
+                     "(let ((cl-prolog2.test:*interpreter-class* :swi)) (5am:run! :cl-prolog2.impl))")))
                  0 1)))

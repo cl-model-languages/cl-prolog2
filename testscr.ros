@@ -4,13 +4,11 @@
 exec ros -Q -- $0 "$@"
 |#
 
-(ql:quickload :fiveam)
-
 (defun main (&rest argv)
   (declare (ignorable argv))
   (uiop:quit (if (handler-case
                      (progn
-                       (asdf:load-system :cl-prolog2.test)
+                       (ql:quickload :cl-prolog2.test)
                        (eval
  (read-from-string
   "(5am:run! :cl-prolog2)"))

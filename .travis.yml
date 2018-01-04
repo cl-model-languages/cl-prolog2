@@ -1,5 +1,5 @@
 language: common-lisp
-sudo: false
+sudo: required
 
 addons:
   apt:
@@ -8,29 +8,36 @@ addons:
       - clisp
       - openjdk-7-jre
 
+os:
+  - linux
+  - osx
+      
 env:
   global:
     - PATH=~/.roswell/bin:$PATH
     - ROSWELL_INSTALL_DIR=$HOME/.roswell
   matrix:
-    - LISP=sbcl-bin
-    - LISP=ccl-bin
-    - LISP=abcl
-    - LISP=clisp
-    - LISP=ecl
-    - LISP=cmucl
-    - LISP=alisp
+    - LISP=sbcl-bin PROLOG=swi    
+    - LISP=sbcl-bin PROLOG=yap    
+    - LISP=sbcl-bin PROLOG=xsb    
+    - LISP=sbcl-bin PROLOG=bprolog
+    - LISP=sbcl-bin PROLOG=gprolog
+    - LISP=sbcl-bin PROLOG=.
+    - LISP=ccl-bin  PROLOG=.    
 
 matrix:
   allow_failures:
-    - env: LISP=clisp
-    - env: LISP=abcl
-    - env: LISP=ecl
-    - env: LISP=cmucl
-    - env: LISP=alisp
+    - env: LISP=abcl     PROLOG=.
+    - env: LISP=clisp    PROLOG=.
+    - env: LISP=ecl      PROLOG=.
+    - env: LISP=cmucl    PROLOG=.
+    - env: LISP=alisp    PROLOG=.
+    - env: LISP=sbcl-bin PROLOG=gprolog
+    - env: LISP=sbcl-bin PROLOG=xsb    
 
 install:
   - curl -L https://raw.githubusercontent.com/snmsts/roswell/release/scripts/install-for-ci.sh | sh
+  - ros install guicho271828/trivial-package-manager
 
 cache:
   directories:
@@ -38,4 +45,4 @@ cache:
     - $HOME/.config/common-lisp
 
 script:
-  - ./testscr.ros
+  - $PROLOG/testscr.ros
