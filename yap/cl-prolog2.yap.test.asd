@@ -3,7 +3,7 @@
   :mailto "guicho2.71828@gmail.com"
   :description "Test system of cl-prolog2.yap"
   :license "MIT"
-  :depends-on (:cl-prolog2.swi
+  :depends-on (:cl-prolog2.yap
                :cl-prolog2.test)
   :perform (test-op :after (op c)
                     (eval
