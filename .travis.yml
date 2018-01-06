@@ -52,5 +52,5 @@ cache:
     - $HOME/.config/common-lisp
 
 script:
-  - $CLI && cl-prolog2 -s examples/mapcolor.lisp
-  - $CLI || $PROLOG/testscr.ros
+  - if $CLI ; then cl-prolog2 -s examples/mapcolor.lisp ; fi
+  - if ! $CLI ; then $PROLOG/testscr.ros ; fi
