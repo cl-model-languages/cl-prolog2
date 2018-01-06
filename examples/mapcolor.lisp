@@ -1,4 +1,11 @@
 
+;; CLI interface example.
+;; Run this script via
+;;
+;; ros install cl-prolog2
+;; cl-prolog2 mapcolor.lisp
+
+;; code based on https://www.cpp.edu/~jrfisher/www/prolog_tutorial/2_1.html
 
 (adjacent 1 2)
 (adjacent 2 1) 
@@ -33,7 +40,17 @@
     (color ?r1 ?color ?coloring)  
     (color ?r2 ?color ?coloring))
 
+
 ;; there are several infix operators.
 ;; :- , >, <, -> etc.
 ;; let's mark variables with ? prefix.
 ;; 
+
+(:- main
+    (forall (conflict ?coloring)
+            (writeln (conflict ?coloring)))
+    (forall (conflict ?r1 ?r2 ?coloring)
+            (writeln (conflict ?r1 ?r2 ?coloring)))
+    halt)
+
+(:- (initialization main)) 

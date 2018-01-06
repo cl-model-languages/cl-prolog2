@@ -1,0 +1,72 @@
+#!/bin/sh
+#|-*- mode:lisp -*-|#
+#|
+exec ros -Q -L sbcl-bin -m cl-prolog2 -- $0 "$@"
+|#
+(progn ;;init forms
+  (ros:ensure-asdf)
+  #+quicklisp (ql:quickload '(:cl-prolog2 :trivia :iterate) :silent t))
+
+(defpackage :ros.script.cl-prolog2.3724188881
+  (:use :cl :cl-prolog2 :trivia :iterate))
+(in-package :ros.script.cl-prolog2.3724188881)
+
+(defun fe (&rest args)
+  (apply #'format *error-output* args)
+  (terpri *error-output*))
+
+(defvar *preprocess-only* nil)
+(defvar *debug* nil)
+(defvar *backend* :swi)
+
+(declaim ((member :swi :yap :xsb :bprolog :gprolog) *backend*))
+
+(defun main (&rest argv)
+  (declare (ignorable argv))
+  (match argv
+    ((list* "-E" rest)
+     (let ((*preprocess-only* t))
+       (apply #'main rest)))
+    ((list* "-d" rest)
+     (let ((*debug* t))
+       (apply #'main rest)))
+    ((list* "-b" backend rest)
+     (let ((*backend* (find-symbol (string-upcase backend) :keyword)))
+       (apply #'main rest)))
+    #+(or)
+    ((list* "-o" file rest)
+     (with-open-file (*standard-output* file
+                                        :direction :output
+                                        :if-exists :supersede
+                                        :if-does-not-exist :create)
+       (apply #'main argv)))
+    ((list* file args)
+     (unless (probe-file file)
+       (fe "File ~a does not exist")
+       (ros:quit 1))
+     (let ((rules (iter (for form in-file file)
+                        (collecting form))))
+       (if *preprocess-only*
+           (iter (for rule in rules)
+                 (print-rule *standard-output* rule))
+           (progn
+             (ql:quickload (format nil "CL-PROLOG2.~a" *backend*) :silent t)
+             (run-prolog rules
+                         *backend*
+                         :debug *debug*
+                         :args args
+                         :input :interactive
+                         :output :interactive
+                         :error :interactive)))))
+    (nil
+     (fe "Usage:")
+     (fe "cl-prolog2 [-E] [-d] [-b BACKEND] FILE ARGS...")
+     (fe "~%This program takes a file written in cl-prolog2 sexp format and process it.")
+     (fe "Normally it converts the input to a regular prolog file and invokes the specified prolog interpreter/compiler.")
+     (fe "~%Options:~%")
+     (fe "-E : Preprocessing-only mode. It writes the regular prolog file to the standard output.")
+     (fe "-d : debug mode, the preprocessed prolog file is echoed in the error output.")
+     (fe "-b BACKEND : change the backend, e.g. swi, yap, xsb, gprolog, bprolog. [default: swi]")
+     (fe "ARGS... : ARGS is a set of additional parameters given to each prolog processor."))))
+
+;;; vim: set ft=lisp lisp:

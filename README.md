@@ -15,6 +15,8 @@ is not defined in the ISO standard, and it is hard to maintain the compatibility
 
 **News** Added support for XSB and GNU Prolog.
 
+**News** Added a CLI interface (roswell script) which can process a sexp-based prolog file directly from the command line.
+
 For a practical guide to write a fast, efficient prolog, [this page](https://www.metalevel.at/prolog/efficiency) might help.
 
 ## Related work
@@ -90,9 +92,27 @@ Care must be taken when two variables ends up in the same name, e.g. both `?a-b-
 
 Symbol `_` and `?` are both converted to symbol `_`, a wildcard symbol.
 
+## CLI interface (roswell script)
+
+To use the CLI interface, install [roswell](https://roswell.github.io/) and run `ros install cl-prolog2`.
+(*note*: until it is included in Quicklisp, use `ros install guicho271828/cl-prolog2` instead.)
+
+    Usage:
+    cl-prolog2 [-E] [-d] [-b BACKEND] FILE ARGS...
+    
+    This program takes a file written in cl-prolog2 sexp format and process it.
+    Normally it converts the input to a regular prolog file and invokes the specified prolog interpreter/compiler.
+    
+    Options:
+    
+    -E : Preprocessing-only mode. It writes the regular prolog file to the standard output.
+    -d : debug mode, the preprocessed prolog file is echoed in the error output.
+    -b BACKEND : change the backend, e.g. swi, yap, xsb, gprolog, bprolog. [default: swi]
+    ARGS... : ARGS is a set of additional parameters given to each prolog processor.
+
 ## Utility Functions
 
-    sort-clauses (rules)
+    cl-prolog2:sort-clauses (rules)
 
     Destructively sort the rules by dictionary ordering.
     Useful for avoiding noncontiguous-clauses errors (rules for the same clauses are not written together).
@@ -101,7 +121,7 @@ Symbol `_` and `?` are both converted to symbol `_`, a wildcard symbol.
     
     Facts (rules without conditions) are given precedence to the standard rules.
 
-    print-term-sexp ()
+    cl-prolog2:print-term-sexp ()
     
     This function returns a cl-prolog2 program for a prolog rule print-term-sexp,
     which prints a prolog term in a SEXP form,
