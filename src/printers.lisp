@@ -64,13 +64,13 @@
     (`(not ,term)
       (format stream "\\+(~/cl-prolog2::print-term/)" term))
     (`(and ,@terms)
-      (if (null terms)
-          (warn "empty conjunction is always a success")
-          (format stream "(~/cl-prolog2::print-commas/)" terms)))
+      ;; empty conjunction is always a success
+      (when terms
+        (format stream "(~/cl-prolog2::print-commas/)" terms)))
     (`(or ,@terms)
+      ;; empty disjunction is always a failure
       (if (null terms)
-          (progn (warn "empty disjunction is always a failure")
-                 (format stream "~/cl-prolog2::print-term/" 'fail))
+          (format stream "~/cl-prolog2::print-term/" 'fail)
           (format stream "(~/cl-prolog2::print-semicolons/)" terms)))
     (`(:- ,head)
       (format stream "(:- ~/cl-prolog2::print-term/)"
