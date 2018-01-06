@@ -12,7 +12,7 @@
 
 ;; blah blah blah.
 
-(defmethod run-prolog ((rules list) (prolog-designator (eql :swi)) &key debug args &allow-other-keys)
+(defmethod run-prolog ((rules list) (prolog-designator (eql :swi)) &key debug args (input *standard-input*) (output :string) (error *error-output*) &allow-other-keys)
   (with-temp (d :directory t :debug debug)
     (with-temp (input-file :tmpdir d :template "XXXXXX.prolog" :debug debug)
       (with-open-file (s input-file :direction :output :if-does-not-exist :error)
@@ -24,7 +24,7 @@
           (format *error-output* "; ~{~a~^ ~}" command))
         (string-trim '(#\Space #\Newline #\Return)
                      (alexandria:unwind-protect-case ()
-                         (uiop:run-program command :output :string)
+                         (uiop:run-program command :input input :output output :error error)
                        (:abort 
                         (format *error-output* "~&; command was: ~{~a~^ ~}" command)
                         (setf debug t))))))))

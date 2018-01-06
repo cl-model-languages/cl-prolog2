@@ -14,7 +14,7 @@
 
 ;; broken, don't use.
 #+(or)
-(defmethod run-prolog ((rules list) (prolog-designator (eql :gprolog-interpreted)) &key debug args &allow-other-keys)
+(defmethod run-prolog ((rules list) (prolog-designator (eql :gprolog-interpreted)) &key debug args (input *standard-input*) (output :string) (error *error-output*) &allow-other-keys)
   (with-temp (d :directory t :debug debug)
     (with-temp (input-file :tmpdir d :template "XXXXXX.prolog" :debug debug)
       (with-open-file (s input-file :direction :output :if-does-not-exist :error)
@@ -25,7 +25,10 @@
         (when debug
           (format *error-output* "; ~{~s~^ ~}" command))
         (let* ((out (alexandria:unwind-protect-case ()
-                        (uiop:run-program command :output :string)
+                        (uiop:run-program command
+                                          :input input
+                                          :output output
+                                          :error error)
                       (:abort 
                        (format *error-output* "~&; command was: ~{~s~^ ~}" command)
                        (setf debug t))))
@@ -42,7 +45,7 @@
                       :displaced-to out
                       :displaced-index-offset (1+ pos)))))))
 
-(defmethod run-prolog ((rules list) (prolog-designator (eql :gprolog)) &key debug args &allow-other-keys)
+(defmethod run-prolog ((rules list) (prolog-designator (eql :gprolog)) &key debug args (input *standard-input*) (output :string) (error *error-output*) &allow-other-keys)
   (declare (ignorable args))
   (with-temp (d :directory t :debug debug)
     (with-temp (input-file :tmpdir d :template "XXXXXX.prolog" :debug debug)
@@ -67,7 +70,10 @@
         
         (string-trim '(#\Space #\Newline #\Return)
                      (alexandria:unwind-protect-case ()
-                         (uiop:run-program command :output :string)
+                         (uiop:run-program command 
+                                           :input input
+                                           :output output
+                                           :error error)
                        (:abort 
                         (format *error-output* "~&; command was: ~{~s~^ ~}" command)
                         (setf debug t))))))))

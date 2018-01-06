@@ -12,7 +12,7 @@
 
 ;; blah blah blah.
 
-(defmethod run-prolog ((rules list) (prolog-designator (eql :yap)) &key debug args &allow-other-keys)
+(defmethod run-prolog ((rules list) (prolog-designator (eql :yap)) &key debug args (input *standard-input*) (output :string) (error *error-output*) &allow-other-keys)
   (with-temp (d :directory t :debug debug)
     (with-temp (input-file :tmpdir d :template "XXXXXX.prolog" :debug debug)
       (with-open-file (s input-file :direction :output :if-does-not-exist :error)
@@ -23,6 +23,6 @@
       (when debug
         (format *error-output* "; ~{~a~^ ~}" `("yap" "-l" ,input-file ,@args)))
       (alexandria:unwind-protect-case ()
-          (uiop:run-program `("yap" "-l" ,input-file ,@args) :output '(:string :stripped t))
+          (uiop:run-program `("yap" "-l" ,input-file ,@args) :input input :output output :error error)
         (:abort (setf debug t))))))
 

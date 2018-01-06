@@ -12,7 +12,7 @@
 
 ;; blah blah blah.
 
-(defmethod run-prolog ((rules list) (prolog-designator (eql :bprolog)) &key debug args &allow-other-keys)
+(defmethod run-prolog ((rules list) (prolog-designator (eql :bprolog)) &key debug args (input *standard-input*) (output :string) (error *error-output*) &allow-other-keys)
   (with-temp (d :directory t :debug debug)
     (with-temp (input-file :tmpdir d :template "XXXXXX.prolog" :debug debug)
       (with-open-file (s input-file :direction :output :if-does-not-exist :error)
@@ -26,7 +26,9 @@
       (let* ((out (alexandria:unwind-protect-case ()
                       (uiop:run-program `(,(namestring (asdf:system-relative-pathname :cl-prolog2.bprolog "BProlog/bp"))
                                            "-i" ,input-file ,@args)
-                                        :output :string)
+                                        :input input
+                                        :output output
+                                        :error error)
                     (:abort (setf debug t))))
              (pos (loop with count = 0
                      until (= count 2)
