@@ -3,7 +3,7 @@
 ;; Run this script via
 ;;
 ;; ros install cl-prolog2
-;; cl-prolog2 mapcolor.lisp
+;; cl-prolog2 -s mapcolor.lisp
 
 ;; code based on https://www.cpp.edu/~jrfisher/www/prolog_tutorial/2_1.html
 
@@ -51,6 +51,9 @@
             (writeln (conflict ?coloring)))
     (forall (conflict ?r1 ?r2 ?coloring)
             (writeln (conflict ?r1 ?r2 ?coloring)))
+    (forall (conflict ?r1 ?r2 ?coloring)
+            (and (print-sexp (conflict ?r1 ?r2 ?coloring))
+                 nl))
     halt)
 
 (:- (initialization main)) 

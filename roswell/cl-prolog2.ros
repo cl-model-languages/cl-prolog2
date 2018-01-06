@@ -17,6 +17,7 @@ exec ros -Q -L sbcl-bin -m cl-prolog2 -- $0 "$@"
 
 (defvar *preprocess-only* nil)
 (defvar *debug* nil)
+(defvar *print-sexp* nil)
 (defvar *backend* :swi)
 
 (declaim ((member :swi :yap :xsb :bprolog :gprolog) *backend*))
@@ -33,6 +34,9 @@ exec ros -Q -L sbcl-bin -m cl-prolog2 -- $0 "$@"
     ((list* "-b" backend rest)
      (let ((*backend* (find-symbol (string-upcase backend) :keyword)))
        (apply #'main rest)))
+    ((list* "-s" rest)
+     (let ((*print-sexp* t))
+       (apply #'main rest)))
     #+(or)
     ((list* "-o" file rest)
      (with-open-file (*standard-output* file
@@ -46,6 +50,8 @@ exec ros -Q -L sbcl-bin -m cl-prolog2 -- $0 "$@"
        (ros:quit 1))
      (let ((rules (iter (for form in-file file)
                         (collecting form))))
+       (when *print-sexp*
+         (setf rules (append (print-sexp) rules)))
        (if *preprocess-only*
            (iter (for rule in rules)
                  (print-rule *standard-output* rule))
@@ -60,12 +66,13 @@ exec ros -Q -L sbcl-bin -m cl-prolog2 -- $0 "$@"
                          :error :interactive)))))
     (nil
      (fe "Usage:")
-     (fe "cl-prolog2 [-E] [-d] [-b BACKEND] FILE ARGS...")
+     (fe "cl-prolog2 [-E] [-d] [-s] [-b BACKEND] FILE ARGS...")
      (fe "~%This program takes a file written in cl-prolog2 sexp format and process it.")
      (fe "Normally it converts the input to a regular prolog file and invokes the specified prolog interpreter/compiler.")
      (fe "~%Options:~%")
      (fe "-E : Preprocessing-only mode. It writes the regular prolog file to the standard output.")
      (fe "-d : debug mode, the preprocessed prolog file is echoed in the error output.")
+     (fe "-s : it appends the print-sexp code to the prolog output.")
      (fe "-b BACKEND : change the backend, e.g. swi, yap, xsb, gprolog, bprolog. [default: swi]")
      (fe "ARGS... : ARGS is a set of additional parameters given to each prolog processor."))))
 
