@@ -1,6 +1,8 @@
 
 # Cl-Prolog2 - Common Interface to the ISO Prolog implementations from Common Lisp
 
+[![Build Status](https://travis-ci.org/guicho271828/cl-prolog2.svg?branch=master)](https://travis-ci.org/guicho271828/cl-prolog2)
+
 This is a realization of Marc Kuo's ["modelling approach to OR (operations research)"](https://kuomarc.wordpress.com/2012/03/05/the-uncommon-lisp-approach-to-operations-research/)
 for Prolog language.
 
