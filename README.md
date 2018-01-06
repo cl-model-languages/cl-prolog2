@@ -96,9 +96,10 @@ Symbol `_` and `?` are both converted to symbol `_`, a wildcard symbol.
 
 To use the CLI interface, install [roswell](https://roswell.github.io/) and run `ros install cl-prolog2`.
 (*note*: until it is included in Quicklisp, use `ros install guicho271828/cl-prolog2` instead.)
+A usage example is in `examples/` directory.
 
     Usage:
-    cl-prolog2 [-E] [-d] [-b BACKEND] FILE ARGS...
+    cl-prolog2 [-E] [-d] [-s] [-b BACKEND] FILE ARGS...
     
     This program takes a file written in cl-prolog2 sexp format and process it.
     Normally it converts the input to a regular prolog file and invokes the specified prolog interpreter/compiler.
@@ -107,6 +108,7 @@ To use the CLI interface, install [roswell](https://roswell.github.io/) and run 
     
     -E : Preprocessing-only mode. It writes the regular prolog file to the standard output.
     -d : debug mode, the preprocessed prolog file is echoed in the error output.
+    -s : it appends the print-sexp code to the prolog output.
     -b BACKEND : change the backend, e.g. swi, yap, xsb, gprolog, bprolog. [default: swi]
     ARGS... : ARGS is a set of additional parameters given to each prolog processor.
 
