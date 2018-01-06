@@ -10,30 +10,36 @@ addons:
 
 os:
   - linux
-  - osx
+  # - osx
       
 env:
   global:
     - PATH=~/.roswell/bin:$PATH
     - ROSWELL_INSTALL_DIR=$HOME/.roswell
   matrix:
-    - LISP=sbcl-bin PROLOG=swi    
-    - LISP=sbcl-bin PROLOG=yap    
-    - LISP=sbcl-bin PROLOG=xsb    
-    - LISP=sbcl-bin PROLOG=bprolog
-    - LISP=sbcl-bin PROLOG=gprolog
-    - LISP=sbcl-bin PROLOG=.
-    - LISP=ccl-bin  PROLOG=.    
+    - CLI=true
+    - CLI=false LISP=sbcl-bin PROLOG=swi    
+    - CLI=false LISP=sbcl-bin PROLOG=yap    
+    - CLI=false LISP=sbcl-bin PROLOG=xsb    
+    - CLI=false LISP=sbcl-bin PROLOG=bprolog
+    - CLI=false LISP=sbcl-bin PROLOG=gprolog
+    - CLI=false LISP=sbcl-bin PROLOG=.
+    - CLI=false LISP=ccl-bin  PROLOG=.    
+    - CLI=false LISP=abcl     PROLOG=.
+    - CLI=false LISP=clisp    PROLOG=.
+    - CLI=false LISP=ecl      PROLOG=.
+    - CLI=false LISP=cmucl    PROLOG=.
+    - CLI=false LISP=alisp    PROLOG=.
 
 matrix:
   allow_failures:
-    - env: LISP=abcl     PROLOG=.
-    - env: LISP=clisp    PROLOG=.
-    - env: LISP=ecl      PROLOG=.
-    - env: LISP=cmucl    PROLOG=.
-    - env: LISP=alisp    PROLOG=.
-    - env: LISP=sbcl-bin PROLOG=gprolog
-    - env: LISP=sbcl-bin PROLOG=xsb    
+    - env: CLI=false LISP=abcl     PROLOG=.
+    - env: CLI=false LISP=clisp    PROLOG=.
+    - env: CLI=false LISP=ecl      PROLOG=.
+    - env: CLI=false LISP=cmucl    PROLOG=.
+    - env: CLI=false LISP=alisp    PROLOG=.
+    - env: CLI=false LISP=sbcl-bin PROLOG=gprolog
+    - env: CLI=false LISP=sbcl-bin PROLOG=xsb    
 
 install:
   - curl -L https://raw.githubusercontent.com/snmsts/roswell/release/scripts/install-for-ci.sh | sh
@@ -45,4 +51,5 @@ cache:
     - $HOME/.config/common-lisp
 
 script:
-  - $PROLOG/testscr.ros
+  - $CLI && cl-prolog2 -s examples/mapcolor.lisp
+  - $CLI || $PROLOG/testscr.ros
