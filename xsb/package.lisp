@@ -25,7 +25,7 @@
       (let ((command `(,*xsb* "--nobanner" "--quietload" "--noprompt"
                                "-e" ,(format nil "consult('~a')." input-file) ,@args)))
         (when debug
-          (format t "; ~{\"~a\"~^ ~}" command))
+          (format *error-output* "; ~{\"~a\"~^ ~}" command))
         (alexandria:unwind-protect-case ()
             (uiop:run-program command :output '(:string :stripped t))
           (:abort (setf debug t)))))))

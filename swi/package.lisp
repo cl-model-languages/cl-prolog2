@@ -21,10 +21,10 @@
             (print-rule s r))))
       (let ((command `("swipl" "--quiet" "-l" ,input-file ,@args)))
         (when debug
-          (format t "; ~{~a~^ ~}" command))
+          (format *error-output* "; ~{~a~^ ~}" command))
         (string-trim '(#\Space #\Newline #\Return)
                      (alexandria:unwind-protect-case ()
                          (uiop:run-program command :output :string)
                        (:abort 
-                        (format t "~&; command was: ~{~a~^ ~}" command)
+                        (format *error-output* "~&; command was: ~{~a~^ ~}" command)
                         (setf debug t))))))))

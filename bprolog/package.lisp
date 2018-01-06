@@ -21,7 +21,7 @@
             (print-rule s r))))
       ;; remove the banner
       (when debug
-        (format t "; ~{~a~^ ~}" `(,(namestring (asdf:system-relative-pathname :cl-prolog2.bprolog "BProlog/bp"))
+        (format *error-output* "; ~{~a~^ ~}" `(,(namestring (asdf:system-relative-pathname :cl-prolog2.bprolog "BProlog/bp"))
                                    "-i" ,input-file ,@args)))
       (let* ((out (alexandria:unwind-protect-case ()
                       (uiop:run-program `(,(namestring (asdf:system-relative-pathname :cl-prolog2.bprolog "BProlog/bp"))

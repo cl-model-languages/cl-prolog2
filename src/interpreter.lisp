@@ -9,7 +9,7 @@
 
 (defun print-rule (stream rule)
   (when *debug-prolog*
-    (format t "~&; ~/cl-prolog2::%print-rule/" rule))
+    (format *error-output* "~&; ~/cl-prolog2::%print-rule/" rule))
   (%print-rule stream rule nil nil))
 
 (defgeneric run-prolog (input prolog-designator &key debug args &allow-other-keys))
@@ -30,7 +30,7 @@ When DEBUG is non-nil, it does not remove the directory so that you can investig
        (unwind-protect
             (progn ,@body)
          (if ,debug
-             (format t "~&not removing ~a for debugging" ,var)
+             (format *error-output* "~&not removing ~a for debugging" ,var)
              (uiop:run-program (format nil "rm -rf ~a" (namestring ,var)) :ignore-error-status t))))))
 
 

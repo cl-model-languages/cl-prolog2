@@ -23,11 +23,11 @@
             (print-rule s r))))
       (let ((command `("gprolog" "--init-goal" ,(format nil "consult('~a')" input-file) ,@args)))
         (when debug
-          (format t "; ~{~s~^ ~}" command))
+          (format *error-output* "; ~{~s~^ ~}" command))
         (let* ((out (alexandria:unwind-protect-case ()
                         (uiop:run-program command :output :string)
                       (:abort 
-                       (format t "~&; command was: ~{~s~^ ~}" command)
+                       (format *error-output* "~&; command was: ~{~s~^ ~}" command)
                        (setf debug t))))
                ;; skip lines for byte-code compilation
                (pos (loop with count = 0
@@ -55,19 +55,19 @@
              (command `(,executable)))
 
         (when debug
-          (format t "~&; ~{~s~^ ~}" compiler-command))
+          (format *error-output* "~&; ~{~s~^ ~}" compiler-command))
         (alexandria:unwind-protect-case ()
             (uiop:run-program compiler-command :output t :error t)
           (:abort 
-           (format t "~&; command was: ~{~s~^ ~}" compiler-command)
+           (format *error-output* "~&; command was: ~{~s~^ ~}" compiler-command)
            (setf debug t)))
 
         (when debug
-          (format t "~&; ~{~s~^ ~}" command))
+          (format *error-output* "~&; ~{~s~^ ~}" command))
         
         (string-trim '(#\Space #\Newline #\Return)
                      (alexandria:unwind-protect-case ()
                          (uiop:run-program command :output :string)
                        (:abort 
-                        (format t "~&; command was: ~{~s~^ ~}" command)
+                        (format *error-output* "~&; command was: ~{~s~^ ~}" command)
                         (setf debug t))))))))

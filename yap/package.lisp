@@ -21,7 +21,7 @@
           (dolist (r rules)
             (print-rule s r))))
       (when debug
-        (format t "; ~{~a~^ ~}" `("yap" "-l" ,input-file ,@args)))
+        (format *error-output* "; ~{~a~^ ~}" `("yap" "-l" ,input-file ,@args)))
       (alexandria:unwind-protect-case ()
           (uiop:run-program `("yap" "-l" ,input-file ,@args) :output '(:string :stripped t))
         (:abort (setf debug t))))))

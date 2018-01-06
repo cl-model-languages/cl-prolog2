@@ -10,7 +10,7 @@
   :defsystem-depends-on (:trivial-package-manager)
   :perform
   (load-op :before (op c)
-           (format t "~&**** BProlog is a commercial software by Afany Software, but is free for academic/research use. ***~%")
+           (format *error-output* "~&**** BProlog is a commercial software by Afany Software, but is free for academic/research use. ***~%")
            (uiop:symbol-call :trivial-package-manager
                              :ensure-program
                              "bp"
