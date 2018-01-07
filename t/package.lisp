@@ -7,6 +7,7 @@
 (defpackage :cl-prolog2.test
   (:use :cl
         :cl-prolog2
+        :cl-prolog2.impl
         :fiveam
         :iterate
         :trivia :alexandria)

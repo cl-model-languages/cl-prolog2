@@ -13,7 +13,7 @@
 
 (defun print-rule (stream rule)
   (when (<= 2 *debug-prolog*)
-    (format *error-output* "~&; ~/cl-prolog2::%print-rule/" rule))
+    (format *error-output* "~&; ~/cl-prolog2.impl::%print-rule/" rule))
   (%print-rule stream rule nil nil))
 
 (defgeneric run-prolog (rules prolog-designator &key debug args input output error &allow-other-keys))

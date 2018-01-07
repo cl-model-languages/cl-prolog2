@@ -19,11 +19,11 @@
 
 (defun print-commas (stream list colon at)
   (declare (ignorable colon at))
-  (format stream "~{~/cl-prolog2::print-term/~^,~}" list))
+  (format stream "~{~/cl-prolog2.impl::print-term/~^,~}" list))
 
 (defun print-semicolons (stream list colon at)
   (declare (ignorable colon at))
-  (format stream "~{~/cl-prolog2::print-term/~^;~}" list))
+  (format stream "~{~/cl-prolog2.impl::print-term/~^;~}" list))
 
 (setf trivia:*arity-check-by-test-call* nil)
 
@@ -58,32 +58,32 @@
     ((number)
      (write term :stream stream))
     (`(list ,@elements)
-      (format stream "[~/cl-prolog2::print-commas/]" elements))
+      (format stream "[~/cl-prolog2.impl::print-commas/]" elements))
     (`(list* ,@elements)
-      (format stream "[~/cl-prolog2::print-commas/|~/cl-prolog2::print-term/]" (butlast elements) (lastcar elements)))
+      (format stream "[~/cl-prolog2.impl::print-commas/|~/cl-prolog2.impl::print-term/]" (butlast elements) (lastcar elements)))
     (`(not ,term)
-      (format stream "\\+(~/cl-prolog2::print-term/)" term))
+      (format stream "\\+(~/cl-prolog2.impl::print-term/)" term))
     (`(and ,@terms)
       (if terms
-          (format stream "(~/cl-prolog2::print-commas/)" terms)
+          (format stream "(~/cl-prolog2.impl::print-commas/)" terms)
           (when (= 3 *debug-prolog*)
             (warn "empty conjunction is always a success."))))
     (`(or ,@terms)
       (if terms
-          (format stream "(~/cl-prolog2::print-semicolons/)" terms)
+          (format stream "(~/cl-prolog2.impl::print-semicolons/)" terms)
           (progn
-            (format stream "~/cl-prolog2::print-term/" 'fail)
+            (format stream "~/cl-prolog2.impl::print-term/" 'fail)
             (when (= 3 *debug-prolog*)
               (warn "empty disjunction is always a success.")))))
     (`(:- ,head)
-      (format stream "(:- ~/cl-prolog2::print-term/)"
+      (format stream "(:- ~/cl-prolog2.impl::print-term/)"
               head))
     (`(:- ,head ,@rest)
-      (format stream "(~/cl-prolog2::print-term/ :- (~{~/cl-prolog2::print-term/~^,~}))"
+      (format stream "(~/cl-prolog2.impl::print-term/ :- (~{~/cl-prolog2.impl::print-term/~^,~}))"
               head rest))
     (`(,functor ,@arguments)
-      (format stream "~/cl-prolog2::print-term/(~/cl-prolog2::print-commas/)" functor arguments))))
+      (format stream "~/cl-prolog2.impl::print-term/(~/cl-prolog2.impl::print-commas/)" functor arguments))))
 
 (defun %print-rule (stream list colon at)
   (declare (ignorable colon at))
-  (format stream "~/cl-prolog2::print-term/.~%" list))
+  (format stream "~/cl-prolog2.impl::print-term/.~%" list))
