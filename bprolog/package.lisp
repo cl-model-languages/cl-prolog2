@@ -5,7 +5,7 @@
 
 (in-package :cl-user)
 (defpackage cl-prolog2.bprolog
-  (:use :cl :cl-prolog2 :cl-prolog2.impl :trivia :iterate)
+  (:use :cl :cl-prolog2 :cl-prolog2.impl :trivia)
   (:export
    #:bprolog))
 (in-package :cl-prolog2.bprolog)
