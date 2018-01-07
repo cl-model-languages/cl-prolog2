@@ -1,7 +1,7 @@
 
 
 
-(in-package :cl-prolog2)
+(in-package :cl-prolog2.impl)
 
 (named-readtables:in-readtable :fare-quasiquote)
 

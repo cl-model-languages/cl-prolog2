@@ -1,5 +1,5 @@
 
-(in-package :cl-prolog2)
+(in-package :cl-prolog2.impl)
 
 ;;; API.
 
