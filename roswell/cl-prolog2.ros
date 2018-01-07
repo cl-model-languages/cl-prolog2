@@ -8,7 +8,7 @@ exec ros -Q -L sbcl-bin -m cl-prolog2 -- $0 "$@"
   #+quicklisp (ql:quickload '(:cl-prolog2 :trivia :iterate) :silent t))
 
 (defpackage :ros.script.cl-prolog2.3724188881
-  (:use :cl :cl-prolog2 :trivia :iterate))
+  (:use :cl :cl-prolog2 :cl-prolog2.impl :trivia :iterate))
 (in-package :ros.script.cl-prolog2.3724188881)
 
 (defun fe (&rest args)
