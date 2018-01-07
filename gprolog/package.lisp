@@ -5,7 +5,7 @@
 
 (in-package :cl-user)
 (defpackage cl-prolog2.gprolog
-  (:use :cl :cl-prolog2)
+  (:use :cl :cl-prolog2 :cl-prolog2.impl)
   (:export
    #:gprolog-prolog))
 (in-package :cl-prolog2.gprolog)
