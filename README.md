@@ -153,8 +153,10 @@ No implementations are complete. Each system has its own problem. Below we list 
   * Many useful non-ISO library functions in SWI are missing. (min_list, max_list etc)
 * B-Prolog:
   * Development seems to be frozen.
-  * It writes the error/warning message to the standard output, rather than the standard error. This is very inconvenient.
-  * It does not support more than 32 tabled predicates in a single clause.
+  * It writes the error/warning message to the standard output, rather than the standard error.
+    This is very inconvenient, so we wrote a custom filter that removes these errors.
+  * It does not support more than 32 tabled predicates in a single clause. It reports that it is an error,
+    but it seems like it just disables the tabling.
   * `(:- initialization main)` does not prevent printing the banner. CL-PROLOG2 skips reading this banner and returns a substring, but this method may be fragile.
   * Many useful non-ISO library functions in SWI are missing. (min_list, max_list etc)
 * GNU Prolog:
