@@ -47,18 +47,20 @@
 
 (defmethod run-prolog ((rules list) (prolog-designator (eql :gprolog))
                        &key
-                         debug args
+                         (debug *debug-prolog*) args
                          (input *standard-input*)
                          (output :string)
                          (error *error-output*)
                          &allow-other-keys)
-  (declare (ignorable args))
-  (with-temp (d :directory t :debug debug)
-    (with-temp (input-file :tmpdir d :template "XXXXXX.prolog" :debug debug)
-      (with-open-file (s input-file :direction :output :if-does-not-exist :error)
-        (let ((*debug-prolog* debug))
+  (let ((*debug-prolog*
+         (if (typep debug '(integer 0 3)) debug (if debug 2 0))))
+    (with-temp (d :directory t :debug (<= 1 *debug-prolog*))
+      (with-temp (input-file :tmpdir d :template "XXXXXX.prolog" :debug (<= 1 *debug-prolog*))
+        (with-open-file (s input-file :direction :output :if-does-not-exist :error)
           (dolist (r rules)
-            (print-rule s r))))
+            (print-rule s r)))
+
+        
       (let* ((executable (namestring (make-pathname :type "out" :defaults input-file))))
 
         (run-command-with-debug-print
@@ -67,4 +69,4 @@
 
         (run-command-with-debug-print
          `(,executable)
-         :input input :output output :error error)))))
+         :input input :output output :error error))))))
