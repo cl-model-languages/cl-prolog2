@@ -45,7 +45,13 @@
                       :displaced-to out
                       :displaced-index-offset (1+ pos)))))))
 
-(defmethod run-prolog ((rules list) (prolog-designator (eql :gprolog)) &key debug args (input *standard-input*) (output :string) (error *error-output*) &allow-other-keys)
+(defmethod run-prolog ((rules list) (prolog-designator (eql :gprolog))
+                       &key
+                         debug args
+                         (input *standard-input*)
+                         (output :string)
+                         (error *error-output*)
+                         &allow-other-keys)
   (declare (ignorable args))
   (with-temp (d :directory t :debug debug)
     (with-temp (input-file :tmpdir d :template "XXXXXX.prolog" :debug debug)
@@ -53,27 +59,12 @@
         (let ((*debug-prolog* debug))
           (dolist (r rules)
             (print-rule s r))))
-      (let* ((executable (namestring (make-pathname :type "out" :defaults input-file)))
-             (compiler-command `("gplc" ,input-file "-o" ,executable))
-             (command `(,executable)))
+      (let* ((executable (namestring (make-pathname :type "out" :defaults input-file))))
 
-        (when debug
-          (format *error-output* "~&; ~{~s~^ ~}" compiler-command))
-        (alexandria:unwind-protect-case ()
-            (uiop:run-program compiler-command :output t :error t)
-          (:abort 
-           (format *error-output* "~&; command was: ~{~s~^ ~}" compiler-command)
-           (setf debug t)))
+        (run-command-with-debug-print
+         `("gplc" ,input-file "-o" ,executable)
+         :input input :output output :error error)
 
-        (when debug
-          (format *error-output* "~&; ~{~s~^ ~}" command))
-        
-        (string-trim '(#\Space #\Newline #\Return)
-                     (alexandria:unwind-protect-case ()
-                         (uiop:run-program command 
-                                           :input input
-                                           :output output
-                                           :error error)
-                       (:abort 
-                        (format *error-output* "~&; command was: ~{~s~^ ~}" command)
-                        (setf debug t))))))))
+        (run-command-with-debug-print
+         `(,executable)
+         :input input :output output :error error)))))

@@ -5,7 +5,7 @@
 
 (in-package :cl-user)
 (defpackage cl-prolog2.bprolog
-  (:use :cl :cl-prolog2 :trivia :iterate)
+  (:use :cl :cl-prolog2 :cl-prolog2.impl :trivia :iterate)
   (:export
    #:bprolog))
 (in-package :cl-prolog2.bprolog)
@@ -26,31 +26,26 @@
         (with-open-file (s input-file :direction :output :if-does-not-exist :error)
           (dolist (r rules)
             (print-rule s r)))
-        (let ((command `(,(namestring (asdf:system-relative-pathname :cl-prolog2.bprolog "BProlog/bp"))
-                          "-i" ,input-file ,@args)))
-          (when (<= 1 *debug-prolog*)
-            (format *error-output* "; ~{~a~^ ~}~%" command))
-          (let* ((out (alexandria:unwind-protect-case ()
-                          (uiop:run-program command
-                                            :input input
-                                            :output output
-                                            :error error)
-                        (:abort (setf *debug-prolog* 3)))))
-            (with-input-from-string (sin out)
-              ;; skip the banner
-              (read-line sin)
-              (read-line sin)
-              (with-output-to-string (sout)
-                (do () ((not (listen sin)))
-                  (let ((line (read-line sin)))
-                    (match line
-                      ((string* #\* #\* #\Space #\E #\r #\r #\o #\r)
-                       ;; skip next line too
-                       (if (= 3 *debug-prolog*)
-                           (progn
-                             (warn "Skipping line: ~s" line)
-                             (warn "Skipping line: ~s" (read-line sin)))
-                           (read-line sin)))
-                      (_
-                       (write-string line sout)))))))))))))
+
+        (let ((out (run-command-with-debug-print
+                    `(,(namestring (asdf:system-relative-pathname :cl-prolog2.bprolog "BProlog/bp"))
+                       "-i" ,input-file ,@args)
+                    :input input :output output :error error)))
+          (with-input-from-string (sin out)
+            ;; skip the banner
+            (read-line sin)
+            (read-line sin)
+            (with-output-to-string (sout)
+              (do () ((not (listen sin)))
+                (let ((line (read-line sin)))
+                  (match line
+                    ((string* #\* #\* #\Space #\E #\r #\r #\o #\r)
+                     ;; skip next line too
+                     (if (= 3 *debug-prolog*)
+                         (progn
+                           (warn "Skipping line: ~s" line)
+                           (warn "Skipping line: ~s" (read-line sin)))
+                         (read-line sin)))
+                    (_
+                     (write-string line sout))))))))))))
 
