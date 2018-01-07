@@ -40,3 +40,13 @@ It may be evaluated multiple times."
              (uiop:run-program (format nil "rm -rf ~a" (namestring ,var)) :ignore-error-status t))))))
 
 
+(defun run-command-with-debug-print (command &rest args)
+  (when (<= 1 *debug-prolog*)
+    (format *error-output* "~&; ~{~a~^ ~}~%" command))
+  (alexandria:unwind-protect-case ()
+      (apply #'uiop:run-program command args)
+    (:abort
+     (format *error-output* "~&; command was: ~{~a~^ ~}~%" command)
+     (format *error-output* "~&; setting the debug level to 3")
+     (setf *debug-prolog* 3))))
+

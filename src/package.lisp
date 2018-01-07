@@ -18,5 +18,6 @@
   (:use :cl :trivia :alexandria :cl-prolog2)
   (:export
    #:print-rule
-   #:with-temp))
+   #:with-temp
+   #:run-command-with-debug-print))
 
