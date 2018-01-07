@@ -19,6 +19,8 @@ is not defined in the ISO standard, and it is hard to maintain the compatibility
 
 **News** Added a CLI interface (roswell script) which can process a sexp-based prolog file directly from the command line.
 
+**News** `*debug-level*` can control the verbosity of the output.
+
 For a practical guide to write a fast, efficient prolog, [this page](https://www.metalevel.at/prolog/efficiency) might help.
 
 ## Related work
