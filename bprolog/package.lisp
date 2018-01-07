@@ -5,7 +5,7 @@
 
 (in-package :cl-user)
 (defpackage cl-prolog2.bprolog
-  (:use :cl :cl-prolog2)
+  (:use :cl :cl-prolog2 :trivia :iterate)
   (:export
    #:bprolog))
 (in-package :cl-prolog2.bprolog)
@@ -19,26 +19,27 @@
         (let ((*debug-prolog* debug))
           (dolist (r rules)
             (print-rule s r))))
-      ;; remove the banner
-      (when debug
-        (format *error-output* "; ~{~a~^ ~}" `(,(namestring (asdf:system-relative-pathname :cl-prolog2.bprolog "BProlog/bp"))
-                                   "-i" ,input-file ,@args)))
-      (let* ((out (alexandria:unwind-protect-case ()
-                      (uiop:run-program `(,(namestring (asdf:system-relative-pathname :cl-prolog2.bprolog "BProlog/bp"))
-                                           "-i" ,input-file ,@args)
-                                        :input input
-                                        :output output
-                                        :error error)
-                    (:abort (setf debug t))))
-             (pos (loop with count = 0
-                     until (= count 2)
-                     for i from 0
-                     do
-                       (when (char= (aref out i) #\Newline)
-                         (incf count))
-                     finally (return i))))
-        (make-array (- (length out) pos 1)
-                    :element-type 'character
-                    :displaced-to out
-                    :displaced-index-offset (1+ pos))))))
+      (let ((command `(,(namestring (asdf:system-relative-pathname :cl-prolog2.bprolog "BProlog/bp"))
+                        "-i" ,input-file ,@args)))
+        (when debug
+          (format *error-output* "; ~{~a~^ ~}" command))
+        (let* ((out (alexandria:unwind-protect-case ()
+                        (uiop:run-program command
+                                          :input input
+                                          :output output
+                                          :error error)
+                      (:abort (setf debug t)))))
+          (with-input-from-string (sin out)
+            ;; skip the banner
+            (read-line sin)
+            (read-line sin)
+            (with-output-to-string (sout)
+              (do () ((not (listen sin)))
+                (let ((line (read-line sin)))
+                  (match line
+                    ((string* #\* #\* #\Space #\E #\r #\r #\o #\r)
+                     (read-line sin) ; skip next line too
+                     )
+                    (_
+                     (write-string line sout))))))))))))
 
