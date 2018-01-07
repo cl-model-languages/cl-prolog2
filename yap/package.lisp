@@ -5,24 +5,29 @@
 
 (in-package :cl-user)
 (defpackage cl-prolog2.yap
-  (:use :cl :cl-prolog2)
+  (:use :cl :cl-prolog2 :cl-prolog2.impl)
   (:export
    #:yap))
 (in-package :cl-prolog2.yap)
 
 ;; blah blah blah.
 
-(defmethod run-prolog ((rules list) (prolog-designator (eql :yap)) &key debug args (input *standard-input*) (output :string) (error *error-output*) &allow-other-keys)
-  (with-temp (d :directory t :debug debug)
-    (with-temp (input-file :tmpdir d :template "XXXXXX.prolog" :debug debug)
-      (with-open-file (s input-file :direction :output :if-does-not-exist :error)
-        (let ((*debug-prolog* debug))
-          (print-rule s '(:- (set_prolog_flag unknown error)))
+(defmethod run-prolog ((rules list) (prolog-designator (eql :yap))
+                       &key
+                         (debug *debug-prolog*) args
+                         (input *standard-input*)
+                         (output :string)
+                         (error *error-output*)
+                         &allow-other-keys)
+  (let ((*debug-prolog*
+         (if (typep debug '(integer 0 3)) debug (if debug 2 0))))
+    (with-temp (d :directory t :debug (<= 1 *debug-prolog*))
+      (with-temp (input-file :tmpdir d :template "XXXXXX.prolog" :debug (<= 1 *debug-prolog*))
+        (with-open-file (s input-file :direction :output :if-does-not-exist :error)
           (dolist (r rules)
-            (print-rule s r))))
-      (when debug
-        (format *error-output* "; ~{~a~^ ~}" `("yap" "-l" ,input-file ,@args)))
-      (alexandria:unwind-protect-case ()
-          (uiop:run-program `("yap" "-l" ,input-file ,@args) :input input :output output :error error)
-        (:abort (setf debug t))))))
+            (print-rule s r)))
+        
+        (run-command-with-debug-print
+         `("yap" "-l" ,input-file ,@args) 
+         :input input :output output :error error)))))
 

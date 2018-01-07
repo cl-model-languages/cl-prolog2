@@ -62,13 +62,27 @@ They should implement a method `(run-prolog rules prolog-designator &key debug a
 where `prolog-designator` is a keyword symbol such as `:swi` or `:yap`.
 The function returns the output of the process as a string.
 
-* `:debug` --- when non-nil, print the prolog output to the standard output.
+* `:debug` --- Non-nil means debug level 3. If a debug level is given, it is used. By default it uses special variable `*debug-prolog*`.
 * `:args` --- provides additional command line argument to the prolog
   interpreter. For example, `:args '("-g" "main")` for swi-prolog says that the top-level goal is `main`.
 
 **We don't provide a parser for Prolog output** and, therefore,
 **formatting the output should be done by Prolog** or you should **write a parser from lisp**.
 Also, consider using `print-term-sexp` below. 
+
+Debug level of prolog is controlled by `*debug-prolog*`.
+
+```
+*DEBUG-PROLOG* names a special variable:
+  Declared type: (UNSIGNED-BYTE 2)
+  Value: 0
+  Documentation:
+    Flag (0-3) for debugging the input to the prolog interpreter.
+     0  : disabled.
+     >=1: print the command line
+     >=2: print the prolog output
+     3  : most verbose. print misc messages. 
+```
 
 ## Query format
 

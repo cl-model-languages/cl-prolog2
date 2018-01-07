@@ -6,41 +6,18 @@
 ;;; package
 
 (in-package :cl-user)
+
 (defpackage cl-prolog2
-  (:use :cl :trivia :alexandria)
   (:export
-   #:<--
-   #:prolog-interpreter
    #:run-prolog
-   #:print-rule
-   #:*interpreter-classes*
-   #:with-temp
    #:*debug-prolog*
    #:sort-clauses
    #:print-sexp))
-(in-package :cl-prolog2)
 
-;;; comments
+(defpackage cl-prolog2.impl
+  (:use :cl :trivia :alexandria :cl-prolog2)
+  (:export
+   #:print-rule
+   #:with-temp
+   #:run-command-with-debug-print))
 
-;; (defun aaa (list)
-;;   list)
-;; (define-compiler-macro aaa (&whole whole list &environment env)
-;;   (if (constantp list env)
-;;       (progn (print :constant!)
-;;              whole)
-;;       (progn (print :not-constant!)
-;;              whole)))
-;; (defun fn (list)
-;;   (aaa list)
-;;   (aaa '(a b c)))
-
-;; > < is ->  + *
-;; write-canonical
-;; 
-;; oh, ok, so, prolog DOES internally use the canonical form for infix
-;; operators, so it is ok for us to provide them using prefix operators.
-;; http://www.cse.unsw.edu.au/~billw/cs9414/notes/prolog/op.html
-
-;; there are more special cases: list notation [] and [|], which is already handled.
-
-;; Retrieving the answer from prolog: findone or findall.

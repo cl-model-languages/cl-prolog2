@@ -5,7 +5,7 @@
 
 (in-package :cl-user)
 (defpackage cl-prolog2.gprolog
-  (:use :cl :cl-prolog2)
+  (:use :cl :cl-prolog2 :cl-prolog2.impl)
   (:export
    #:gprolog-prolog))
 (in-package :cl-prolog2.gprolog)
@@ -45,35 +45,28 @@
                       :displaced-to out
                       :displaced-index-offset (1+ pos)))))))
 
-(defmethod run-prolog ((rules list) (prolog-designator (eql :gprolog)) &key debug args (input *standard-input*) (output :string) (error *error-output*) &allow-other-keys)
-  (declare (ignorable args))
-  (with-temp (d :directory t :debug debug)
-    (with-temp (input-file :tmpdir d :template "XXXXXX.prolog" :debug debug)
-      (with-open-file (s input-file :direction :output :if-does-not-exist :error)
-        (let ((*debug-prolog* debug))
+(defmethod run-prolog ((rules list) (prolog-designator (eql :gprolog))
+                       &key
+                         (debug *debug-prolog*) args
+                         (input *standard-input*)
+                         (output :string)
+                         (error *error-output*)
+                         &allow-other-keys)
+  (let ((*debug-prolog*
+         (if (typep debug '(integer 0 3)) debug (if debug 2 0))))
+    (with-temp (d :directory t :debug (<= 1 *debug-prolog*))
+      (with-temp (input-file :tmpdir d :template "XXXXXX.prolog" :debug (<= 1 *debug-prolog*))
+        (with-open-file (s input-file :direction :output :if-does-not-exist :error)
           (dolist (r rules)
-            (print-rule s r))))
-      (let* ((executable (namestring (make-pathname :type "out" :defaults input-file)))
-             (compiler-command `("gplc" ,input-file "-o" ,executable))
-             (command `(,executable)))
+            (print-rule s r)))
 
-        (when debug
-          (format *error-output* "~&; ~{~s~^ ~}" compiler-command))
-        (alexandria:unwind-protect-case ()
-            (uiop:run-program compiler-command :output t :error t)
-          (:abort 
-           (format *error-output* "~&; command was: ~{~s~^ ~}" compiler-command)
-           (setf debug t)))
-
-        (when debug
-          (format *error-output* "~&; ~{~s~^ ~}" command))
         
-        (string-trim '(#\Space #\Newline #\Return)
-                     (alexandria:unwind-protect-case ()
-                         (uiop:run-program command 
-                                           :input input
-                                           :output output
-                                           :error error)
-                       (:abort 
-                        (format *error-output* "~&; command was: ~{~s~^ ~}" command)
-                        (setf debug t))))))))
+      (let* ((executable (namestring (make-pathname :type "out" :defaults input-file))))
+
+        (run-command-with-debug-print
+         `("gplc" ,input-file "-o" ,executable)
+         :input input :output output :error error)
+
+        (run-command-with-debug-print
+         `(,executable)
+         :input input :output output :error error))))))
