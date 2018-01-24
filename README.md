@@ -40,10 +40,11 @@ it is quite possible to support those systems from cl-prolog2.
 * [SWI-prolog](http://swi-prolog.org/), the most actively developed prolog system.
 * [YAP](https://www.dcc.fc.up.pt/~vsc/Yap/), another well-maintained prolog system.
 * [XSB](http://xsb.sourceforge.net/), famous for introducing tabling semantics.
-* [B-Prolog](http://www.picat-lang.org/bprolog), a commercial implementation by Afany Software, which is free-to-use
-  for academic purpose. Claiming to be fast, but the
-  [benchmark](http://www.picat-lang.org/bprolog/performance.htm) was taken many
-  years ago. 
+* [B-Prolog](http://www.picat-lang.org/bprolog),
+  originally a commercial implementation by Afany Software, currently in the public domain (personal communication).
+  The [benchmark](http://www.picat-lang.org/bprolog/performance.htm) was taken many years ago, but
+  our internal testing reconfirmed this performance.
+  
 * [GNU Prolog](http://www.gprolog.org/) is a prolog compiler that compiles
   Prolog to a native assembly and generates a standalone executable.
 
