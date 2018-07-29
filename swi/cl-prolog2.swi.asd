@@ -7,15 +7,16 @@
   :components ((:file "package"))
   :description "CL-PROLOG2 extension for SWI-Prolog"
   :in-order-to ((test-op (test-op :cl-prolog2.swi.test)))
-  :defsystem-depends-on (:trivial-package-manager)
-  :perform
-  (load-op :before (op c)
-           (uiop:symbol-call :trivial-package-manager
-                             :ensure-program
-                             "swipl"
-                             :apt "swi-prolog/stable/swi-prolog-nox"
-                             :yum "pl"
-                             :dnf "pl"
-                             :pacman "swi-prolog"
-                             :brew "swi-prolog"
-                             :choco "swi-prolog")))
+  ;; :defsystem-depends-on (:trivial-package-manager)
+  ;; :perform
+  ;; (load-op :before (op c)
+  ;;          (uiop:symbol-call :trivial-package-manager
+  ;;                            :ensure-program
+  ;;                            "swipl"
+  ;;                            :apt "swi-prolog/stable/swi-prolog-nox"
+  ;;                            :yum "pl"
+  ;;                            :dnf "pl"
+  ;;                            :pacman "swi-prolog"
+  ;;                            :brew "swi-prolog"
+  ;;                            :choco "swi-prolog"))
+  )
