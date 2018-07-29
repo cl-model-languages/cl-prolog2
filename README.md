@@ -189,16 +189,13 @@ This library is at least tested on implementation listed below:
 
 + SBCL 1.4.0 on X86-64 Linux 4.10.0-38-generic (author's environment)
 
-Also, it depends on the following libraries:
+To test the library, you need swi-prolog, gprolog, xsb, bprolog or yap prolog.
+Specific notes for implementations:
 
-+ trivia :
-    
-+ alexandria by *Nikodemus Siivola <nikodemus@sb-studio.net>, and others.* :
-    Alexandria is a collection of portable public domain utilities.
-+ iterate by ** :
-    Jonathan Amsterdam's iterator/gatherer/accumulator facility
-
-## Installation
++ For swi-prolog on ubuntu/debian, we recommend installing the latest from ppa:swi-prolog/stable .
++ For xsb, yap and bprolog, run the Makefile in each subdirectory (e.g. [[./bprolog/]] ) to download the binaries.
+  Specifically, yap is compiled with tabling support which is missing in the Debian package.
++ gprolog is available from most package managers, but they are difficult to run.
 
 ## Author
 
