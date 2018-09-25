@@ -18,7 +18,7 @@
 (defmethod run-prolog ((rules list) (prolog-designator (eql :xsb))
                        &key
                          (debug *debug-prolog*) args
-                         (input *standard-input*)
+                         (input "/dev/null")
                          (output :string)
                          (error *error-output*)
                          &allow-other-keys)

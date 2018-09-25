@@ -15,7 +15,7 @@
 (defmethod run-prolog ((rules list) (prolog-designator (eql :swi))
                        &key
                          (debug *debug-prolog*) args
-                         (input *standard-input*)
+                         (input "/dev/null")
                          (output :string)
                          (error *error-output*)
                          &allow-other-keys)

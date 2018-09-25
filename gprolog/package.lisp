@@ -14,7 +14,7 @@
 
 ;; broken, don't use.
 #+(or)
-(defmethod run-prolog ((rules list) (prolog-designator (eql :gprolog-interpreted)) &key debug args (input *standard-input*) (output :string) (error *error-output*) &allow-other-keys)
+(defmethod run-prolog ((rules list) (prolog-designator (eql :gprolog-interpreted)) &key debug args (input "/dev/null") (output :string) (error *error-output*) &allow-other-keys)
   (with-temp (d :directory t :debug debug)
     (with-temp (input-file :tmpdir d :template "XXXXXX.prolog" :debug debug)
       (with-open-file (s input-file :direction :output :if-does-not-exist :error)
@@ -48,7 +48,7 @@
 (defmethod run-prolog ((rules list) (prolog-designator (eql :gprolog))
                        &key
                          (debug *debug-prolog*) args
-                         (input *standard-input*)
+                         (input "/dev/null")
                          (output :string)
                          (error *error-output*)
                          &allow-other-keys)
