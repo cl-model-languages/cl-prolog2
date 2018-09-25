@@ -45,13 +45,17 @@
     ((symbol name)
      (write-char #\' stream)
      ;; escape a backslash
-     (loop
-        for c across name
-        do
-          (if (char= #\\ c)
-              (progn (write-char #\\ stream)
-                     (write-char #\\ stream))
-              (write-char (char-downcase c) stream)))
+     (let ((mixed-case-p
+            (not (every (disjoin #'upper-case-p
+                                 (complement #'both-case-p))
+                        name))))
+       (loop
+          for c across name
+          do
+            (if (char= #\\ c)
+                (progn (write-char #\\ stream)
+                       (write-char #\\ stream))
+                (write-char (if mixed-case-p c (char-downcase c)) stream))))
      (write-char #\' stream))
     ((string*)
      (format stream "'~a'" term))

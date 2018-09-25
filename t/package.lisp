@@ -80,6 +80,14 @@
                                halt)
                            (:- (initialization main)))
                          *interpreter-class* :debug *debug*)))
+  (is (equal "Anakin-Skywalker"
+             (run-prolog `((parent-of luke-skywalker |Anakin-Skywalker|)
+                           (:- main
+                               (parent-of luke-skywalker ?who-is-it)
+                               (write ?who-is-it)
+                               halt)
+                           (:- (initialization main)))
+                         *interpreter-class* :debug *debug*)))
   (is (equal "\\=" ; string for \=
              (run-prolog `((parent-of luke-skywalker \\=) ; lisp symbol \= ; quoted prolog '\\=' ; prolog \=
                            (:- main
