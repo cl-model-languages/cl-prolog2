@@ -7,6 +7,7 @@ addons:
       - libc6-i386
       - clisp
       - openjdk-7-jre
+      - gprolog
 
 os:
   - linux
@@ -41,6 +42,11 @@ matrix:
     - env: CLI=false LISP=sbcl-bin PROLOG=gprolog
     - env: CLI=false LISP=sbcl-bin PROLOG=xsb    
 
+before_install:
+  - sudo add-apt-repository -y ppa:swi-prolog/stable
+  - sudo apt-get update -q
+  - sudo apt-get install -y swi-prolog-nox
+
 install:
   - curl -L https://raw.githubusercontent.com/snmsts/roswell/release/scripts/install-for-ci.sh | sh
   - ros install guicho271828/trivial-package-manager
@@ -52,5 +58,6 @@ cache:
     - $HOME/.config/common-lisp
 
 script:
+  - make -C $PROLOG ; true
   - if $CLI ; then cl-prolog2 -s examples/mapcolor.lisp ; fi
   - if ! $CLI ; then $PROLOG/testscr.ros ; fi
