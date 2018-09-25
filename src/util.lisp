@@ -44,12 +44,25 @@ it may corrupt the program especially when cut operator (!) is involved."
                ((string> name1 name2) nil)))))))
 
 (defun print-sexp (&key swi)
-  "This function returns a cl-prolog2 program for a prolog rule print-sexp/1,
+  "
+This function returns a cl-prolog2 program for a prolog rule print-sexp/1,
 which prints a prolog term in a SEXP form.
 
 print-sexp prints atoms/numbers as atoms/numbers, a term as a list, and a list as a list.
 
-When SWI is non-nil, use compound_name_arguments/2 instead of =../2 for printing a term.
+To be used with SWI, SWI should be non-nil due to the implementation-specific matter.
+(It uses compound_name_arguments/2 instead of =../2 for printing a term.)
+
+usage:
+
+(run-prolog `((:- main
+                  (print-sexp (parent-of luke anakin))
+                  halt)
+              (:- (initialization main))
+              ,@(print-sexp :swi t))
+            :swi :output :string)
+
+;; -> \"(parent-of luke anakin)\", NIL, 0
 "
   `((:- (print-sexp (list))
         (write "()")

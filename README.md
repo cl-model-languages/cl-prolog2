@@ -142,11 +142,27 @@ A usage example is in `examples/` directory.
     
     Facts (rules without conditions) are given precedence to the standard rules.
 
-    cl-prolog2:print-term-sexp ()
+    cl-prolog2:print-sexp ()
     
-    This function returns a cl-prolog2 program for a prolog rule print-term-sexp,
-    which prints a prolog term in a SEXP form,
-    i.e. achieving a goal (print-term-sexp ?term) prints ?term in SEXP.
+    This function returns a cl-prolog2 program for a prolog rule print-sexp/1,
+    which prints a prolog term in a SEXP form.
+    
+    print-sexp prints atoms/numbers as atoms/numbers, a term as a list, and a list as a list.
+    
+    To be used with SWI, SWI should be non-nil due to the implementation-specific matter.
+    (It uses compound_name_arguments/2 instead of =../2 for printing a term.)
+    
+    usage:
+    
+    (run-prolog `((:- main
+                      (print-sexp (parent-of luke anakin))
+                      halt)
+                  (:- (initialization main))
+                  ,@(print-sexp :swi t))
+                :swi :output :string)
+    
+    ;; -> "(parent-of luke anakin)", NIL, 0
+    
 
 ## To what extent prolog systems are compatible to each other?
 
