@@ -12,6 +12,8 @@
 
 ;; blah blah blah.
 
+(defvar *yap* (namestring (asdf:system-relative-pathname :cl-prolog2.yap "yap/build/yap")))
+
 (defmethod run-prolog ((rules list) (prolog-designator (eql :yap))
                        &key
                          (debug *debug-prolog*) args
@@ -26,8 +28,8 @@
         (with-open-file (s input-file :direction :output :if-does-not-exist :error)
           (dolist (r rules)
             (print-rule s r)))
-        
+
         (run-command-with-debug-print
-         `("yap" "-l" ,input-file ,@args) 
+         `(,*yap* "-l" ,input-file ,@args)
          :input input :output output :error error)))))
 
