@@ -12,7 +12,7 @@
 ;; don't try to do things really complicated.
 ;; do not excessively try to support all subset of prolog.
 
-(declaim (ftype (function (stream * boolean boolean))
+(declaim (ftype (function (stream t boolean boolean))
                 print-commas
                 print-term
                 %print-rule))
